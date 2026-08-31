@@ -1,21 +1,21 @@
-﻿import { Navbar } from "@/components/Navbar";
-import { Hero } from "@/components/Hero";
-import { Work } from "@/components/Work";
+﻿import { Hero } from "@/components/Hero";
+import { About } from "@/components/About";
+import { Skills } from "@/components/Skills";
+import { Projects } from "@/components/Projects";
+import { Roadmap } from "@/components/Roadmap";
 import { Playground } from "@/components/Playground";
-import { TerminalModal } from "@/components/TerminalModal";
 import { Contact } from "@/components/Contact";
-import { Footer } from "@/components/Footer";
 
-export default function Home() {
+export default function Page() {
   return (
-    <main className="min-h-screen bg-transparent relative z-10">
-      <Navbar />
+    <main className="relative min-h-screen bg-[#080808] text-white">
       <Hero />
-      <Work />
+      <About />
+      <Skills />
+      <Projects />
+      <Roadmap />
       <Playground />
-      <TerminalModal />
       <Contact />
-      <Footer />
     </main>
   );
 }
