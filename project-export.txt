@@ -1,0 +1,1941 @@
+==========================================
+FILE: app\globals.css
+==========================================
+@import "tailwindcss";
+
+/* Hardware Acceleration Helper */
+.transform-gpuWillChange {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Optimize video rendering layers */
+video {
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+==========================================
+FILE: app\layout.tsx
+==========================================
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import { AudioProvider } from "@/components/AudioProvider";
+import { ScrollProgress } from "@/components/ScrollProgress";
+import { CustomCursor } from "@/components/CustomCursor";
+import { BackgroundVideo } from "@/components/BackgroundVideo";
+
+const inter = Inter({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+  title: "Tommie.dev - Full Stack Developer & UI/UX Designer",
+  description: "Cinematic, high-performance web development and design portfolio.",
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en" className="dark">
+      <body className={`${inter.className} bg-black text-white antialiased selection:bg-emerald-500/30 selection:text-emerald-300 relative`}>
+        <AudioProvider>
+          <BackgroundVideo />
+          <ScrollProgress />
+          <CustomCursor />
+          {children}
+        </AudioProvider>
+      </body>
+    </html>
+  );
+}
+
+==========================================
+FILE: app\page.tsx
+==========================================
+import { Hero } from "@/components/Hero";
+import { About } from "@/components/About";
+import { Skills } from "@/components/Skills";
+import { Projects } from "@/components/Projects";
+import { Roadmap } from "@/components/Roadmap";
+import { Playground } from "@/components/Playground";
+import { Contact } from "@/components/Contact";
+import { BackgroundVideo } from "@/components/BackgroundVideo";
+
+export default function Page() {
+  return (
+    <main className="relative min-h-screen bg-[#080808] text-white">
+      <BackgroundVideo />
+      <Hero />
+      <About />
+      <Skills />
+      <Projects />
+      <Roadmap />
+      <Playground />
+      <Contact />
+    </main>
+  );
+}
+
+==========================================
+FILE: app\robots.ts
+==========================================
+import { MetadataRoute } from "next";
+
+export default function robots(): MetadataRoute.Robots {
+  const baseUrl = "https://your-portfolio-domain.com";
+  return {
+    rules: {
+      userAgent: "*",
+      allow: "/",
+    },
+    sitemap: `${baseUrl}/sitemap.xml`,
+  };
+}
+
+==========================================
+FILE: app\sitemap.ts
+==========================================
+import { MetadataRoute } from "next";
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const baseUrl = "https://your-portfolio-domain.com";
+  return [
+    {
+      url: baseUrl,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 1.0,
+    },
+  ];
+}
+
+==========================================
+FILE: components\About.tsx
+==========================================
+"use client";
+
+import { motion } from "framer-motion";
+
+const stats = [
+  { label: "Live Client Projects", value: "3+" },
+  { label: "Sites Shipped", value: "5+" },
+  { label: "Full Stack Stack", value: "100%" },
+  { label: "Client Satisfaction", value: "100%" },
+];
+
+export function About() {
+  return (
+    <section id="about" className="py-20 px-6 max-w-6xl mx-auto">
+      <div className="bg-black/40 backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-3xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div>
+            <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
+              About Me
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mt-4 mb-4">
+              Engineering sleek digital products with high performance.
+            </h2>
+            <p className="text-zinc-400 text-sm leading-relaxed mb-4">
+              I'm a full-stack developer and UI/UX designer specialized in building modern web applications, e-commerce platforms, and interactive user interfaces using Next.js, TypeScript, and Tailwind CSS.
+            </p>
+            <p className="text-zinc-400 text-sm leading-relaxed">
+              My focus is combining high-end cinematic design with clean code, responsive layouts, and lightning-fast load times.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            {stats.map((stat, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="p-5 rounded-2xl bg-zinc-900/60 border border-white/5 text-center"
+              >
+                <div className="text-3xl font-bold text-emerald-400 mb-1">{stat.value}</div>
+                <div className="text-xs text-zinc-400">{stat.label}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+==========================================
+FILE: components\AnimatedBackground.tsx
+==========================================
+"use client";
+
+import { useEffect, useRef } from "react";
+
+export function AnimatedBackground() {
+  const vantaRef = useRef(null);
+  const effectRef = useRef<any>(null);
+
+  useEffect(() => {
+    let mounted = true;
+
+    (async () => {
+      const THREE = await import("three");
+      const FOG = (await import("vanta/dist/vanta.fog.min")).default;
+
+      if (mounted && vantaRef.current && !effectRef.current) {
+        effectRef.current = FOG({
+          el: vantaRef.current,
+          THREE,
+          mouseControls: false,
+          touchControls: false,
+          gyroControls: false,
+          minHeight: 200.0,
+          minWidth: 200.0,
+          highlightColor: 0x00e5a8,
+          midtoneColor: 0x2b6cff,
+          lowlightColor: 0x7c3aed,
+          baseColor: 0x080808,
+          blurFactor: 0.65,
+          speed: 1.1,
+          zoom: 0.8,
+        });
+      }
+    })();
+
+    return () => {
+      mounted = false;
+      if (effectRef.current) {
+        effectRef.current.destroy();
+        effectRef.current = null;
+      }
+    };
+  }, []);
+
+  return (
+    <div
+      ref={vantaRef}
+      className="pointer-events-none fixed inset-0 -z-10 opacity-40"
+    />
+  );
+}
+
+==========================================
+FILE: components\AudioProvider.tsx
+==========================================
+"use client";
+
+import { createContext, useContext, useEffect, useRef, useState } from "react";
+
+type UIAudioContextType = {
+  enabled: boolean;
+  toggle: () => void;
+  playClick: () => void;
+  playHover: () => void;
+};
+
+const UIAudioContext = createContext<UIAudioContextType | null>(null);
+
+export function useUIAudio() {
+  const ctx = useContext(UIAudioContext);
+  if (!ctx) throw new Error("useUIAudio must be used within AudioProvider");
+  return ctx;
+}
+
+export function AudioProvider({ children }: { children: React.ReactNode }) {
+  const [enabled, setEnabled] = useState(false);
+  const clickAudioRef = useRef<HTMLAudioElement | null>(null);
+  const hoverAudioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    const stored = window.localStorage.getItem("ui-audio-enabled");
+    if (stored === "true") setEnabled(true);
+    
+    // Initialize audio elements pointing to public/sounds/
+    clickAudioRef.current = new Audio("/sounds/click.mp3");
+    hoverAudioRef.current = new Audio("/sounds/hover.mp3");
+    
+    if (clickAudioRef.current) clickAudioRef.current.volume = 0.2;
+    if (hoverAudioRef.current) hoverAudioRef.current.volume = 0.1;
+  }, []);
+
+  function playClick() {
+    if (!enabled || !clickAudioRef.current) return;
+    clickAudioRef.current.currentTime = 0;
+    clickAudioRef.current.play().catch(() => {});
+  }
+
+  function playHover() {
+    if (!enabled || !hoverAudioRef.current) return;
+    hoverAudioRef.current.currentTime = 0;
+    hoverAudioRef.current.play().catch(() => {});
+  }
+
+  function toggle() {
+    setEnabled((prev) => {
+      const next = !prev;
+      window.localStorage.setItem("ui-audio-enabled", String(next));
+      return next;
+    });
+  }
+
+  return (
+    <UIAudioContext.Provider value={{ enabled, toggle, playClick, playHover }}>
+      {children}
+    </UIAudioContext.Provider>
+  );
+}
+
+==========================================
+FILE: components\BackgroundVideo.tsx
+==========================================
+"use client";
+
+import { memo } from "react";
+
+export const BackgroundVideo = memo(function BackgroundVideo() {
+  return (
+    <div className="fixed inset-0 -z-50 overflow-hidden pointer-events-none transform-gpuWillChange">
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="metadata"
+        className="w-full h-full object-cover opacity-35 scale-105 transform-gpu"
+      >
+        <source src="/bg-video.mp4" type="video/mp4" />
+      </video>
+
+      {/* Optimized Lightweight Dark Vignette Overlay */}
+      <div className="absolute inset-0 bg-black/60 pointer-events-none" />
+      <div className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none" />
+    </div>
+  );
+});
+
+==========================================
+FILE: components\Contact.tsx
+==========================================
+"use client";
+
+import { useState } from "react";
+import { useUIAudio } from "./AudioProvider";
+
+type Region = "GH" | "USD";
+type ProjectType = "business" | "restaurant" | "ecommerce" | "webapp";
+type Tier = "basic" | "standard" | "premium";
+
+const PRICING = {
+  GH: {
+    currency: "GHS",
+    symbol: "GH?",
+    types: {
+      business: { name: "Standard Business", basic: 1500, standard: 3000, premium: 4500 },
+      restaurant: { name: "Restaurant & Dining", basic: 2400, standard: 4800, premium: 7200 },
+      ecommerce: { name: "E-commerce Store", basic: 3600, standard: 7200, premium: 10800 },
+      webapp: { name: "Custom Web Application", basic: 4500, standard: 9000, premium: 13500 },
+    },
+    features: [
+      { id: "seo", label: "Advanced SEO & Meta Setup", cost: 500 },
+      { id: "cms", label: "Content Management System (CMS)", cost: 800 },
+      { id: "booking", label: "Online Booking / Reservation System", cost: 1000 },
+      { id: "analytics", label: "Analytics & Conversion Tracking", cost: 400 },
+    ],
+  },
+  USD: {
+    currency: "USD",
+    symbol: "$",
+    types: {
+      business: { name: "Standard Business", basic: 300, standard: 600, premium: 900 },
+      restaurant: { name: "Restaurant & Dining", basic: 480, standard: 960, premium: 1440 },
+      ecommerce: { name: "E-commerce Store", basic: 720, standard: 1440, premium: 2160 },
+      webapp: { name: "Custom Web Application", basic: 900, standard: 1800, premium: 2700 },
+    },
+    features: [
+      { id: "seo", label: "Advanced SEO & Meta Setup", cost: 100 },
+      { id: "cms", label: "Content Management System (CMS)", cost: 160 },
+      { id: "booking", label: "Online Booking / Reservation System", cost: 200 },
+      { id: "analytics", label: "Analytics & Conversion Tracking", cost: 80 },
+    ],
+  },
+};
+
+export function Contact() {
+  const { playClick, playHover } = useUIAudio();
+  const [region, setRegion] = useState<Region>("GH");
+  const [projectType, setProjectType] = useState<ProjectType>("business");
+  const [tier, setTier] = useState<Tier>("basic");
+  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
+
+  const config = PRICING[region];
+  const baseCost = config.types[projectType][tier];
+  const featureCost = selectedFeatures.reduce((sum, fId) => {
+    const feat = config.features.find((f) => f.id === fId);
+    return sum + (feat ? feat.cost : 0);
+  }, 0);
+
+  const totalEstimate = baseCost + featureCost;
+
+  function toggleFeature(fId: string) {
+    playClick();
+    setSelectedFeatures((prev) =>
+      prev.includes(fId) ? prev.filter((id) => id !== fId) : [...prev, fId]
+    );
+  }
+
+  const whatsappMessage = encodeURIComponent(
+    `Hi Tommie! I evaluated a project estimate on your website:\n` +
+    `- Region: ${region === "GH" ? "Ghana (GHS)" : "International (USD)"}\n` +
+    `- Type: ${config.types[projectType].name}\n` +
+    `- Tier: ${tier.toUpperCase()}\n` +
+    `- Add-ons: ${selectedFeatures.length > 0 ? selectedFeatures.join(", ") : "None"}\n` +
+    `- Total Estimate: ${config.symbol}${totalEstimate.toLocaleString()}\n\n` +
+    `I'd like to discuss building this for my business!`
+  );
+
+  return (
+    <section id="contact" className="py-20 px-6 max-w-5xl mx-auto">
+      <div className="text-center mb-12">
+        <h2 className="text-3xl font-bold text-white mb-2">Project Scope & Pricing Estimator</h2>
+        <p className="text-zinc-400">Tailor your requirements to calculate an instant estimated scope.</p>
+      </div>
+
+      <div className="bg-black/40 backdrop-blur-md border border-white/10 p-8 rounded-2xl mb-12">
+        <div className="flex justify-between items-center mb-8 border-b border-white/10 pb-6">
+          <span className="text-sm font-semibold text-zinc-300">Select Region / Currency:</span>
+          <div className="flex gap-2">
+            <button
+              onClick={() => { playClick(); setRegion("GH"); }}
+              onMouseEnter={playHover}
+              className={`px-4 py-2 rounded-xl text-sm transition-all ${
+                region === "GH" ? "bg-emerald-500 text-black font-semibold" : "bg-zinc-800 text-zinc-300"
+              }`}
+            >
+              Ghana (GHS)
+            </button>
+            <button
+              onClick={() => { playClick(); setRegion("USD"); }}
+              onMouseEnter={playHover}
+              className={`px-4 py-2 rounded-xl text-sm transition-all ${
+                region === "USD" ? "bg-emerald-500 text-black font-semibold" : "bg-zinc-800 text-zinc-300"
+              }`}
+            >
+              International (USD)
+            </button>
+          </div>
+        </div>
+
+        <div className="mb-8">
+          <label className="block text-sm font-semibold text-zinc-300 mb-3">1. Select Project Type</label>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {(Object.keys(config.types) as ProjectType[]).map((type) => (
+              <button
+                key={type}
+                onClick={() => { playClick(); setProjectType(type); }}
+                onMouseEnter={playHover}
+                className={`p-3 rounded-xl border text-sm text-left transition-all ${
+                  projectType === type
+                    ? "border-emerald-500 bg-emerald-500/10 text-white"
+                    : "border-white/10 bg-zinc-900/50 text-zinc-400"
+                }`}
+              >
+                {config.types[type].name}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="mb-8">
+          <label className="block text-sm font-semibold text-zinc-300 mb-3">2. Select Package Tier</label>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {(["basic", "standard", "premium"] as Tier[]).map((t) => (
+              <button
+                key={t}
+                onClick={() => { playClick(); setTier(t); }}
+                onMouseEnter={playHover}
+                className={`p-4 rounded-xl border text-left transition-all ${
+                  tier === t
+                    ? "border-emerald-500 bg-emerald-500/10 text-white"
+                    : "border-white/10 bg-zinc-900/50 text-zinc-400"
+                }`}
+              >
+                <div className="font-semibold capitalize text-base text-white">{t}</div>
+                <div className="text-xl font-bold text-emerald-400 mt-1">
+                  {config.symbol}{config.types[projectType][t].toLocaleString()}
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="mb-8">
+          <label className="block text-sm font-semibold text-zinc-300 mb-3">3. Optional Add-ons</label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {config.features.map((feat) => {
+              const isSelected = selectedFeatures.includes(feat.id);
+              return (
+                <button
+                  key={feat.id}
+                  onClick={() => toggleFeature(feat.id)}
+                  onMouseEnter={playHover}
+                  className={`p-3 rounded-xl border text-sm flex justify-between items-center transition-all ${
+                    isSelected
+                      ? "border-emerald-500 bg-emerald-500/10 text-white"
+                      : "border-white/10 bg-zinc-900/50 text-zinc-400"
+                  }`}
+                >
+                  <span>{feat.label}</span>
+                  <span className="text-emerald-400 font-semibold">+{config.symbol}{feat.cost}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-center gap-6">
+          <div>
+            <span className="text-sm text-zinc-400 block">Estimated Total</span>
+            <span className="text-3xl font-extrabold text-white">
+              {config.symbol}{totalEstimate.toLocaleString()}
+            </span>
+          </div>
+
+          <a
+            href={`https://wa.me/?text=${whatsappMessage}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={playClick}
+            onMouseEnter={playHover}
+            className="w-full md:w-auto px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded-xl text-center transition-all shadow-lg shadow-emerald-500/20"
+          >
+            Send Estimate via WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+==========================================
+FILE: components\CustomCursor.tsx
+==========================================
+"use client";
+
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+
+export function CustomCursor() {
+  const [position, setPosition] = useState({ x: -100, y: -100 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    const onMouseMove = (e: MouseEvent) => {
+      setPosition({ x: e.clientX, y: e.clientY });
+    };
+
+    const onMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest("button, a, input, [role='button']")) {
+        setIsHovered(true);
+      } else {
+        setIsHovered(false);
+      }
+    };
+
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseover", onMouseOver);
+
+    return () => {
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseover", onMouseOver);
+    };
+  }, []);
+
+  return (
+    <motion.div
+      className="fixed top-0 left-0 w-8 h-8 rounded-full border border-emerald-400/60 bg-emerald-500/10 pointer-events-none z-50 backdrop-blur-[1px] shadow-[0_0_15px_rgba(16,185,129,0.3)] hidden md:block"
+      animate={{
+        x: position.x - 16,
+        y: position.y - 16,
+        scale: isHovered ? 1.8 : 1,
+        borderColor: isHovered ? "rgba(16, 185, 129, 0.9)" : "rgba(16, 185, 129, 0.4)",
+      }}
+      transition={{ type: "spring", stiffness: 250, damping: 20, mass: 0.2 }}
+    />
+  );
+}
+
+==========================================
+FILE: components\FAQ.tsx
+==========================================
+"use client";
+
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useUIAudio } from "./AudioProvider";
+
+const faqs = [
+  {
+    q: "What is your typical turn-around time for a website?",
+    a: "Standard business sites take 1–2 weeks, while custom e-commerce or full-stack web applications take 2–4 weeks from initial kickoff to deployment.",
+  },
+  {
+    q: "Do you handle hosting, domains, and deployment?",
+    a: "Yes. I manage complete setup on Vercel, AWS, or custom servers, connect your custom domains, and set up SSL security certificates.",
+  },
+  {
+    q: "Can I update content on my site after launch?",
+    a: "Absolutly. Every project includes CMS integration (Sanity or custom admin) or an intuitive editing interface so you can update text and images effortlessly.",
+  },
+  {
+    q: "How do payments and project contracts work?",
+    a: "Projects operate on a standard 50% initial deposit and 50% upon final launch verification. Estimates generated on-site link directly to WhatsApp to kick off discussion.",
+  },
+];
+
+export function FAQ() {
+  const { playClick, playHover } = useUIAudio();
+  const [openIdx, setOpenIdx] = useState<number | null>(null);
+
+  const toggle = (idx: number) => {
+    playClick();
+    setOpenIdx(openIdx === idx ? null : idx);
+  };
+
+  return (
+    <section id="faq" className="py-20 px-6 max-w-4xl mx-auto">
+      <div className="text-center mb-12">
+        <h2 className="text-3xl font-bold text-white mb-2">Frequently Asked Questions</h2>
+        <p className="text-zinc-400">Everything you need to know about starting a project.</p>
+      </div>
+
+      <div className="space-y-4">
+        {faqs.map((faq, i) => {
+          const isOpen = openIdx === i;
+          return (
+            <div
+              key={i}
+              className="rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 overflow-hidden transition-all hover:border-emerald-500/30"
+            >
+              <button
+                onClick={() => toggle(i)}
+                onMouseEnter={playHover}
+                className="w-full p-6 text-left flex justify-between items-center text-white font-medium"
+              >
+                <span>{faq.q}</span>
+                <span className={`text-emerald-400 transition-transform duration-300 text-xl ${isOpen ? "rotate-45" : ""}`}>
+                  +
+                </span>
+              </button>
+
+              <AnimatePresence>
+                {isOpen && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="px-6 pb-6 text-sm text-zinc-400 border-t border-white/5 pt-4"
+                  >
+                    {faq.a}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+==========================================
+FILE: components\Footer.tsx
+==========================================
+"use client";
+
+import { useEffect, useState } from "react";
+
+function useFps() {
+  const [fps, setFps] = useState(60);
+  useEffect(() => {
+    let frameCount = 0;
+    let lastTime = performance.now();
+    let raf: number;
+    function loop(now: number) {
+      frameCount++;
+      if (now - lastTime >= 1000) {
+        setFps(frameCount);
+        frameCount = 0;
+        lastTime = now;
+      }
+      raf = requestAnimationFrame(loop);
+    }
+    raf = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+  return fps;
+}
+
+export function Footer() {
+  const fps = useFps();
+
+  return (
+    <footer className="border-t border-white/10">
+      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-10 text-sm text-white/70 md:flex-row">
+        <span>Copyright Tommie.dev. All rights reserved.</span>
+        <span className="text-xs text-white/50">{fps} FPS</span>
+        <span>Built with Next.js and Framer Motion.</span>
+      </div>
+    </footer>
+  );
+}
+
+==========================================
+FILE: components\Hero.tsx
+==========================================
+"use client";
+
+import { motion } from "framer-motion";
+import { MagneticButton } from "./MagneticButton";
+import { useUIAudio } from "./AudioProvider";
+
+export function Hero() {
+  const { playClick, playHover } = useUIAudio();
+
+  return (
+    <section id="hero" className="relative min-h-screen flex flex-col justify-center items-center text-center px-6 pt-20 pb-16 overflow-hidden">
+      {/* Ambient Glowing Orbs */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-emerald-500/15 rounded-full blur-[120px] pointer-events-none animate-pulse z-0" />
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="max-w-4xl z-10 relative"
+      >
+        {/* Availability Badge */}
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-8 backdrop-blur-md">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+          <span>Available for Freelance Projects</span>
+        </div>
+
+        {/* Headline */}
+        <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-white tracking-tight mb-6 leading-[1.1]">
+          Crafting <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-200 bg-clip-text text-transparent">cinematic digital</span> web experiences.
+        </h1>
+
+        {/* Subtitle */}
+        <p className="text-zinc-400 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
+          Full-stack developer & UI/UX specialist crafting high-performance Next.js builds and interactive web applications.
+        </p>
+
+        {/* Magnetic CTA Buttons */}
+        <div className="flex flex-wrap justify-center items-center gap-4">
+          <MagneticButton>
+            <a
+              href="#work"
+              onClick={playClick}
+              onMouseEnter={playHover}
+              className="px-8 py-4 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-sm transition-all duration-300 shadow-[0_0_25px_rgba(16,185,129,0.35)] block"
+            >
+              View my work
+            </a>
+          </MagneticButton>
+
+          <MagneticButton>
+            <a
+              href="#contact"
+              onClick={playClick}
+              onMouseEnter={playHover}
+              className="px-8 py-4 rounded-2xl bg-black/50 hover:bg-white/10 text-white font-medium text-sm border border-white/10 transition-all duration-300 backdrop-blur-md block hover:border-white/20"
+            >
+              Let's Talk
+            </a>
+          </MagneticButton>
+        </div>
+      </motion.div>
+    </section>
+  );
+}
+
+==========================================
+FILE: components\LiquidGlassCard.tsx
+==========================================
+"use client";
+
+import { useRef, useState } from "react";
+import { motion } from "framer-motion";
+
+export function LiquidGlassCard({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [spotlight, setSpotlight] = useState({ x: 0, y: 0, opacity: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    setSpotlight({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+      opacity: 1,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setSpotlight((prev) => ({ ...prev, opacity: 0 }));
+  };
+
+  return (
+    <motion.div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      whileHover={{ y: -4, scale: 1.01 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      className={`relative rounded-3xl bg-white/[0.04] backdrop-blur-2xl backdrop-saturate-200 border border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.4)] overflow-hidden transition-all duration-300 hover:border-emerald-400/50 hover:shadow-[0_0_35px_rgba(16,185,129,0.25)] ${className}`}
+    >
+      {/* Specular Liquid Light Follower */}
+      <div
+        className="pointer-events-none absolute -inset-px transition-opacity duration-300"
+        style={{
+          opacity: spotlight.opacity,
+          background: `radial-gradient(500px circle at ${spotlight.x}px ${spotlight.y}px, rgba(16, 185, 129, 0.2), rgba(255, 255, 255, 0.08) 35%, transparent 75%)`,
+        }}
+      />
+
+      {/* Curved Reflection Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-black/50 pointer-events-none" />
+
+      <div className="relative z-10">{children}</div>
+    </motion.div>
+  );
+}
+
+==========================================
+FILE: components\MagneticButton.tsx
+==========================================
+"use client";
+
+import { useRef, useState } from "react";
+import { motion } from "framer-motion";
+
+export function MagneticButton({ children, className = "", onClick }: { children: React.ReactNode; className?: string; onClick?: () => void }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const { clientX, clientY } = e;
+    const { left, top, width, height } = ref.current?.getBoundingClientRect() || { left: 0, top: 0, width: 0, height: 0 };
+    const middleX = clientX - (left + width / 2);
+    const middleY = clientY - (top + height / 2);
+    setPosition({ x: middleX * 0.25, y: middleY * 0.25 });
+  };
+
+  const handleMouseLeave = () => {
+    setPosition({ x: 0, y: 0 });
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      animate={{ x: position.x, y: position.y }}
+      transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
+      className={`inline-block cursor-pointer ${className}`}
+      onClick={onClick}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+==========================================
+FILE: components\Navbar.tsx
+==========================================
+"use client";
+
+import { NAV_LINKS } from "@/lib/constants";
+import { useEffect, useState } from "react";
+import { Volume2, VolumeX } from "lucide-react";
+import { useUIAudio } from "./AudioProvider";
+
+function useAccraTime() {
+  const [time, setTime] = useState("");
+  useEffect(() => {
+    function update() {
+      setTime(
+        new Intl.DateTimeFormat("en-GB", {
+          hour: "2-digit",
+          minute: "2-digit",
+          timeZone: "Africa/Accra",
+          hour12: false,
+        }).format(new Date())
+      );
+    }
+    update();
+    const id = setInterval(update, 30000);
+    return () => clearInterval(id);
+  }, []);
+  return time;
+}
+
+export function Navbar() {
+  const time = useAccraTime();
+  const { enabled, toggle, playClick, playHover } = useUIAudio();
+
+  return (
+    <header className="fixed left-0 top-0 z-40 w-full border-b border-white/10 bg-white/10 backdrop-blur-md dark:border-white/10 dark:bg-black/25">
+      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <a href="#top" onMouseEnter={playHover} className="text-lg font-semibold tracking-tight text-text">
+          Tommie<span className="text-accent">.</span>
+        </a>
+
+        <ul className="hidden items-center gap-8 md:flex">
+          {NAV_LINKS.map((link) => (
+            <li key={link.href}>
+              <a
+                href={link.href}
+                onMouseEnter={playHover}
+                onClick={playClick}
+                className="text-sm text-muted transition-colors hover:text-text"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+
+        <div className="flex items-center gap-3">
+          <div className="hidden items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-white/80 lg:flex">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+            </span>
+            Available for Q3 Projects GMT {time}
+          </div>
+
+          <button
+            onClick={toggle}
+            aria-label={enabled ? "Mute UI sounds" : "Enable UI sounds"}
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 transition-colors hover:text-accent"
+          >
+            {enabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
+          </button>
+
+          <a
+            href="#contact"
+            onMouseEnter={playHover}
+            onClick={playClick}
+            className="rounded-full bg-accent px-5 py-2 text-sm font-medium text-[#080808] transition-transform hover:scale-105"
+          >
+            Lets Talk
+          </a>
+        </div>
+      </nav>
+    </header>
+  );
+}
+
+==========================================
+FILE: components\Playground.tsx
+==========================================
+"use client";
+
+import { useState } from "react";
+import { motion } from "framer-motion";
+
+function ToggleSwitch() {
+  const [on, setOn] = useState(false);
+  return (
+    <button
+      onClick={() => setOn(!on)}
+      className={`relative h-7 w-12 rounded-full transition-colors duration-300 ${
+        on ? "bg-emerald-500" : "bg-white/15"
+      }`}
+      aria-label="Toggle demo switch"
+    >
+      <motion.span
+        layout
+        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+        className="absolute top-1 h-5 w-5 rounded-full bg-white shadow-md"
+        style={{ left: on ? "26px" : "4px" }}
+      />
+    </button>
+  );
+}
+
+function CustomSlider() {
+  const [value, setValue] = useState(50);
+  return (
+    <div className="flex flex-col gap-2">
+      <input
+        type="range"
+        min={0}
+        max={100}
+        value={value}
+        onChange={(e) => setValue(Number(e.target.value))}
+        className="h-1 w-full cursor-pointer appearance-none rounded-full bg-white/15 accent-emerald-500"
+      />
+      <span className="text-xs text-white/60">{value}%</span>
+    </div>
+  );
+}
+
+export function Playground() {
+  return (
+    <section id="playground" className="mx-auto max-w-6xl px-6 py-28">
+      <div className="mb-16 max-w-2xl">
+        <span className="text-xs uppercase tracking-[0.2em] text-emerald-400">Playground</span>
+        <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-4xl">
+          Interactive UI, built by hand.
+        </h2>
+        <p className="mt-4 text-white/70">
+          A few of the custom components powering this site, live and interactive.
+        </p>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2">
+        <div className="rounded-2xl border border-white/10 bg-black/40 p-6 backdrop-blur-md">
+          <h3 className="text-sm font-medium text-white">Custom Toggle</h3>
+          <div className="mt-4">
+            <ToggleSwitch />
+          </div>
+        </div>
+        <div className="rounded-2xl border border-white/10 bg-black/40 p-6 backdrop-blur-md">
+          <h3 className="text-sm font-medium text-white">Custom Slider</h3>
+          <div className="mt-4">
+            <CustomSlider />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+==========================================
+FILE: components\PrismaHero.tsx
+==========================================
+"use client";
+
+import { motion, useInView } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import { useRef } from "react";
+
+interface WordsPullUpProps {
+  text: string;
+  className?: string;
+}
+
+function WordsPullUp({ text, className = "" }: WordsPullUpProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true });
+  const words = text.split(" ");
+
+  return (
+    <div ref={ref} className={`inline-flex flex-wrap ${className}`}>
+      {words.map((word, i) => (
+        <motion.span
+          key={i}
+          initial={{ y: 20, opacity: 0 }}
+          animate={isInView ? { y: 0, opacity: 1 } : {}}
+          transition={{ duration: 0.6, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+          className="inline-block"
+          style={{ marginRight: "0.2em" }}
+        >
+          {word}
+        </motion.span>
+      ))}
+    </div>
+  );
+}
+
+const navItems = ["Work", "About", "Skills", "Contact"];
+
+export function PrismaHero() {
+  return (
+    <section id="top" className="h-screen w-full">
+      <div className="relative h-full w-full overflow-hidden">
+
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 h-full w-full object-cover"
+        >
+          <source src="/bg-video.mp4" type="video/mp4" />
+        </video>
+
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/70" />
+
+        <nav className="absolute left-1/2 top-6 z-20 -translate-x-1/2">
+          <div className="flex items-center gap-4 rounded-full border border-white/20 bg-black/40 px-6 py-2 backdrop-blur-md sm:gap-8">
+            {navItems.map((item) => (
+              <a
+                key={item}
+                href={`#${item.toLowerCase()}`}
+                className="text-xs text-white/70 transition-colors hover:text-white sm:text-sm"
+              >
+                {item}
+              </a>
+            ))}
+          </div>
+        </nav>
+
+        <div className="absolute bottom-0 left-0 right-0 z-10 px-4 pb-10 sm:px-6 md:px-10">
+          <div className="grid grid-cols-12 items-end gap-4">
+            <div className="col-span-12 lg:col-span-8">
+              <h1 className="font-[family-name:var(--font-heading)] font-medium leading-[0.85] tracking-[-0.03em] text-white text-[13vw] sm:text-[11vw] md:text-[9vw] lg:text-[7.5vw]" style={{ textShadow: "0 4px 24px rgba(0,0,0,0.35)" }}>
+                <WordsPullUp text="Tommie.dev" />
+              </h1>
+            </div>
+
+            <div className="col-span-12 flex flex-col gap-5 pb-2 lg:col-span-4">
+              <motion.p
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                className="text-sm text-white/80 md:text-base"
+              >
+                Full-stack developer and UI/UX designer building
+                cinematic, high-performance websites that feel
+                custom-crafted, not templated.
+              </motion.p>
+
+              <motion.a
+                href="#projects"
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                className="group inline-flex items-center gap-2 self-start rounded-full bg-accent py-1 pl-5 pr-1 text-sm font-medium text-[#080808] transition-all hover:gap-3"
+              >
+                View my work
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#080808] transition-transform group-hover:scale-110">
+                  <ArrowRight className="h-4 w-4 text-accent" />
+                </span>
+              </motion.a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+==========================================
+FILE: components\Process.tsx
+==========================================
+"use client";
+
+import { motion } from "framer-motion";
+
+const STEPS = [
+  { number: "01", title: "Discovery", description: "Understanding the goal, the audience, and what success looks like before any design begins." },
+  { number: "02", title: "Design", description: "Wireframes and high-fidelity design exploring layout, type, and motion direction until it feels right." },
+  { number: "03", title: "Development", description: "Building it clean and fast, component by component, tested across devices as it comes together." },
+  { number: "04", title: "Launch", description: "Performance checks, SEO setup, and a smooth handoff so the site is ready for real traffic from day one." },
+];
+
+export function Process() {
+  return (
+    <section id="process" className="mx-auto max-w-6xl px-6 py-28">
+      <div className="mb-16 max-w-2xl">
+        <span className="text-xs uppercase tracking-[0.2em] text-accent">How I Work</span>
+        <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-4xl">
+          A process built for premium outcomes.
+        </h2>
+      </div>
+
+      <div className="grid gap-px overflow-hidden rounded-3xl border border-white/10 bg-white/5 md:grid-cols-4">
+        {STEPS.map((step, i) => (
+          <motion.div
+            key={step.number}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.1, duration: 0.5 }}
+            className="bg-black/40 backdrop-blur-md p-8"
+          >
+            <span className="text-sm text-accent">{step.number}</span>
+            <h3 className="mt-4 text-lg font-semibold text-white">{step.title}</h3>
+            <p className="mt-3 text-sm text-white/70">{step.description}</p>
+          </motion.div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+
+==========================================
+FILE: components\Projects.tsx
+==========================================
+"use client";
+
+import Image from "next/image";
+import { motion } from "framer-motion";
+
+export function Projects() {
+  return (
+    <section id="projects" className="mx-auto max-w-6xl px-6 py-28">
+      <div className="mb-16 max-w-2xl">
+        <span className="text-xs uppercase tracking-[0.2em] text-accent">
+          Selected Work
+        </span>
+        <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-4xl">
+          Case studies, not just screenshots.
+        </h2>
+      </div>
+
+      <a
+        href="https://noodlesking.shop"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group mb-8 grid gap-8 rounded-3xl border border-white/10 bg-black/40 backdrop-blur-md p-8 md:grid-cols-2 md:p-12"
+      >
+        <div className="relative aspect-video overflow-hidden rounded-2xl bg-background">
+          <Image
+            src="/projects/noodles-king.jpg"
+            alt="Noodles King"
+            fill
+            sizes="(min-width: 768px) 50vw, 100vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        </div>
+        <div className="flex flex-col justify-center">
+          <span className="text-xs uppercase tracking-[0.2em] text-white/70">
+            Flagship Project · Live
+          </span>
+          <h3 className="mt-3 text-2xl font-semibold text-white md:text-3xl">
+            Noodles King
+          </h3>
+          <p className="mt-4 text-white/70">
+            Built for a live e-commerce brand, currently serving real customers.
+            A full storefront built to feel premium from the first scroll, fast,
+            cinematic, and built to convert.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-2">
+            {["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"].map((t) => (
+              <span key={t} className="rounded-full border border-white/10 px-3 py-1 text-xs text-white/70">
+                {t}
+              </span>
+            ))}
+          </div>
+        </div>
+      </a>
+
+      <div>
+        <span className="text-xs uppercase tracking-[0.2em] text-white/70">
+          Also shipped
+        </span>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <a
+            href="https://sandramills01.bolt.host/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full border border-white/10 px-5 py-2.5 text-sm text-white transition-colors hover:border-accent hover:text-accent"
+          >
+            sandramills01 ?
+          </a>
+          <a
+            href="https://ralachips.lovable.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full border border-white/10 px-5 py-2.5 text-sm text-white transition-colors hover:border-accent hover:text-accent"
+          >
+            Rala Chips ?
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+==========================================
+FILE: components\Roadmap.tsx
+==========================================
+"use client";
+
+import { motion } from "framer-motion";
+
+const STEPS = [
+  {
+    phase: "01",
+    title: "Discovery & Strategy",
+    description: "We align on your goals, target audience, visual style, and exact technical requirements.",
+  },
+  {
+    phase: "02",
+    title: "UI/UX & Architecture",
+    description: "Wireframing and crafting high-performance component architecture optimized for speed and conversion.",
+  },
+  {
+    phase: "03",
+    title: "Development & Polish",
+    description: "Writing clean code with Next.js, integrating backend services, and smoothing out every animation.",
+  },
+  {
+    phase: "04",
+    title: "Launch & Handover",
+    description: "Rigorous testing, security hardening, domain configuration, and final deployment.",
+  },
+];
+
+export function Roadmap() {
+  return (
+    <section id="roadmap" className="mx-auto max-w-6xl px-6 py-28">
+      <div className="mb-16 max-w-2xl">
+        <span className="text-xs uppercase tracking-[0.2em] text-emerald-400">Roadmap</span>
+        <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-4xl">
+          How we build your product.
+        </h2>
+        <p className="mt-4 text-white/70">
+          A transparent, step-by-step framework to take your project from concept to launch.
+        </p>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-4">
+        {STEPS.map((step, index) => (
+          <motion.div
+            key={step.phase}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: index * 0.1 }}
+            className="relative rounded-2xl border border-white/10 bg-black/40 p-6 backdrop-blur-md flex flex-col justify-between"
+          >
+            <div>
+              <span className="text-xs font-mono text-emerald-400">{step.phase}</span>
+              <h3 className="mt-3 text-lg font-medium text-white">{step.title}</h3>
+              <p className="mt-2 text-sm text-white/60 leading-relaxed">{step.description}</p>
+            </div>
+            <div className="mt-6 h-0.5 w-full bg-white/10 overflow-hidden">
+              <div className="h-full bg-emerald-500/50 w-full origin-left" />
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+==========================================
+FILE: components\ScrollProgress.tsx
+==========================================
+"use client";
+
+import { motion, useScroll, useSpring } from "framer-motion";
+
+export function ScrollProgress() {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  });
+
+  return (
+    <motion.div
+      className="fixed top-0 left-0 right-0 h-1 bg-emerald-500 origin-left z-50 shadow-[0_0_12px_#10b981]"
+      style={{ scaleX }}
+    />
+  );
+}
+
+==========================================
+FILE: components\Skills.tsx
+==========================================
+"use client";
+
+import { motion } from "framer-motion";
+
+const skills = [
+  { name: "Next.js / React", level: 95, detail: "App Router, SSR, Server Actions" },
+  { name: "TypeScript", level: 90, detail: "Type-safe full-stack architectures" },
+  { name: "Tailwind CSS & Motion", level: 98, detail: "Cinematic dark UI & glassmorphism" },
+  { name: "PostgreSQL & Supabase", level: 85, detail: "Database design & auth flows" },
+];
+
+export function Skills() {
+  return (
+    <section id="skills" className="py-20 px-6 max-w-5xl mx-auto">
+      <div className="text-center mb-12">
+        <h2 className="text-3xl font-bold text-white mb-2">Technical Proficiency</h2>
+        <p className="text-zinc-400">Core technologies driving performance and aesthetics.</p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {skills.map((skill, index) => (
+          <div
+            key={index}
+            className="p-6 rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 hover:border-emerald-500/30 transition-all"
+          >
+            <div className="flex justify-between items-center mb-2">
+              <span className="font-semibold text-white">{skill.name}</span>
+              <span className="text-emerald-400 font-mono text-sm">{skill.level}%</span>
+            </div>
+            <p className="text-xs text-zinc-500 mb-3">{skill.detail}</p>
+
+            <div className="w-full h-2 bg-zinc-800 rounded-full overflow-hidden">
+              <motion.div
+                className="h-full bg-emerald-500 rounded-full shadow-[0_0_8px_#10b981]"
+                initial={{ width: 0 }}
+                whileInView={{ width: `${skill.level}%` }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, delay: index * 0.1 }}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+==========================================
+FILE: components\SmoothScroll.tsx
+==========================================
+"use client";
+
+import { useEffect } from "react";
+import Lenis from "lenis";
+
+export function SmoothScroll() {
+  useEffect(() => {
+    const lenis = new Lenis({ duration: 1.1 });
+    let frameId: number;
+    function raf(time: number) {
+      lenis.raf(time);
+      frameId = requestAnimationFrame(raf);
+    }
+    frameId = requestAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(frameId);
+      lenis.destroy();
+    };
+  }, []);
+
+  return null;
+}
+
+==========================================
+FILE: components\StoryTransformation.tsx
+==========================================
+"use client";
+
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { TrendingUp, Users, ShoppingBag } from "lucide-react";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
+export function StoryTransformation() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const stagnantRef = useRef<HTMLDivElement>(null);
+  const phoneRef = useRef<HTMLDivElement>(null);
+  const boomingRef = useRef<HTMLDivElement>(null);
+  const barRef = useRef<HTMLDivElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.set(boomingRef.current, { clipPath: "circle(0% at 50% 100%)" });
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "+=3200",
+          scrub: 1,
+          pin: true,
+        },
+      });
+
+      tl.to(phoneRef.current, { opacity: 1, scale: 1, y: 0, duration: 1 })
+        .to(".chat-client", { opacity: 1, duration: 0.5 })
+        .to(".chat-response", { opacity: 1, duration: 0.5 })
+        .to(phoneRef.current, { opacity: 0, scale: 0.5, duration: 0.4 })
+        .to(stagnantRef.current, { filter: "grayscale(0%)", duration: 1.2 }, "<")
+        .to(boomingRef.current, { clipPath: "circle(150% at 50% 100%)", duration: 1.4 }, "<")
+        .fromTo(barRef.current, { height: 0 }, { height: 160, duration: 1 }, "-=0.6")
+        .from(".badge", { opacity: 0, scale: 0, y: 20, stagger: 0.15, ease: "elastic.out(1,0.6)" }, "-=0.4")
+        .fromTo(ctaRef.current, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 1 });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section ref={containerRef} className="story-container relative h-[500vh]">
+      <div className="sticky top-0 h-screen overflow-hidden bg-background">
+
+        <div
+          ref={stagnantRef}
+          className="stagnant-canvas absolute inset-0 flex items-center justify-center grayscale"
+        >
+          <div className="grid w-full max-w-4xl grid-cols-3 gap-4 p-10">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="h-28 rounded-xl border border-border bg-surface" />
+            ))}
+          </div>
+          <div className="absolute left-10 top-10 animate-pulse rounded-full border border-red-500 px-4 py-2 text-xs text-red-400">
+            0 Users Active
+          </div>
+        </div>
+
+        <div
+          ref={boomingRef}
+          className="booming-dashboard absolute inset-0 flex flex-col items-center justify-center gap-10 bg-background"
+        >
+          <div className="grid w-full max-w-4xl grid-cols-3 gap-4 px-10">
+            <div className="flex h-32 flex-col justify-between rounded-xl border border-accent bg-surface p-4">
+              <Users size={18} className="text-accent" />
+              <div>
+                <div className="text-xl font-semibold text-text">1,204</div>
+                <div className="text-xs text-muted">Active Users</div>
+              </div>
+            </div>
+            <div className="flex h-32 flex-col justify-between rounded-xl border border-accent bg-surface p-4">
+              <ShoppingBag size={18} className="text-accent" />
+              <div>
+                <div className="text-xl font-semibold text-text">312</div>
+                <div className="text-xs text-muted">Orders Today</div>
+              </div>
+            </div>
+            <div className="flex h-32 flex-col justify-between rounded-xl border border-accent bg-surface p-4">
+              <TrendingUp size={18} className="text-accent" />
+              <div>
+                <div className="text-xl font-semibold text-text">+500%</div>
+                <div className="text-xs text-muted">Traffic Growth</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative flex h-48 items-end">
+            <div ref={barRef} className="w-16 rounded-t-lg bg-accent" style={{ height: 0 }} />
+          </div>
+
+          <div className="badge absolute left-[8%] top-[15%] rounded-full bg-accent px-4 py-2 text-xs font-medium text-[#080808]">
+            New Order: $150
+          </div>
+          <div className="badge absolute right-[8%] top-[20%] rounded-full bg-accent px-4 py-2 text-xs font-medium text-[#080808]">
+            Lead Captured!
+          </div>
+        </div>
+
+        <div
+          ref={phoneRef}
+          className="phone-trigger absolute bottom-10 right-10 z-10 w-72 scale-50 rounded-3xl border border-border bg-surface p-4 opacity-0"
+        >
+          <div className="space-y-3 text-sm">
+            <div className="chat-client rounded-2xl bg-background p-3 text-text opacity-0">
+              Hey Thommy, our shop is struggling. We need a high-converting web app to scale up.
+            </div>
+            <div className="chat-response rounded-2xl bg-accent p-3 text-[#080808] opacity-0">
+              I got you. Watch this code injection.
+            </div>
+          </div>
+        </div>
+
+        <div
+          ref={ctaRef}
+          className="cta-final absolute inset-0 z-20 flex scale-90 items-center justify-center bg-background/90 opacity-0 backdrop-blur-sm"
+        >
+          <div className="rounded-3xl border border-border bg-surface p-12 text-center">
+            <h3 className="text-2xl font-semibold text-text md:text-3xl">
+              Ready to scale like this?
+            </h3>
+            <a
+              href="#contact"
+              className="mt-6 inline-block rounded-full bg-accent px-8 py-3.5 text-sm font-medium text-[#080808]"
+            >
+              Work With Me
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  );
+}
+
+==========================================
+FILE: components\TerminalModal.tsx
+==========================================
+"use client";
+
+import { useState } from "react";
+import { motion } from "framer-motion";
+
+export function TerminalModal() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [input, setInput] = useState("");
+  const [logs, setLogs] = useState<string[]>([
+    "Tommie.dev Interactive CLI v1.0",
+    "Type 'help' to view available commands.",
+  ]);
+
+  const handleCommand = (e: React.FormEvent) => {
+    e.preventDefault();
+    const cmd = input.trim().toLowerCase();
+    let response = "";
+
+    if (cmd === "help") {
+      response = "Available commands: 'skills', 'about', 'clear', 'contact'";
+    } else if (cmd === "skills") {
+      response = "React, Next.js, TypeScript, Tailwind CSS, Framer Motion, Node.js, PostgreSQL";
+    } else if (cmd === "about") {
+      response = "Tommie - Full-Stack Developer & UI/UX Specialist crafting high-end web builds.";
+    } else if (cmd === "contact") {
+      response = "WhatsApp / Email available directly via the estimator below.";
+    } else if (cmd === "clear") {
+      setLogs([]);
+      setInput("");
+      return;
+    } else {
+      response = `Command not recognized: '${cmd}'. Type 'help' for options.`;
+    }
+
+    setLogs((prev) => [...prev, `> ${input}`, response]);
+    setInput("");
+  };
+
+  return (
+    <div className="py-12 flex justify-center">
+      {!isOpen ? (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="px-5 py-2.5 bg-black/40 border border-white/10 hover:border-emerald-500/40 rounded-xl text-xs text-zinc-400 hover:text-emerald-400 transition-all backdrop-blur-md"
+        >
+          ?? Open Developer Terminal
+        </button>
+      ) : (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="w-full max-w-2xl bg-zinc-950/90 border border-white/10 rounded-2xl p-6 font-mono text-sm text-emerald-400 shadow-2xl backdrop-blur-xl"
+        >
+          <div className="flex justify-between items-center mb-4 border-b border-zinc-800 pb-3">
+            <span className="text-xs text-zinc-500">tommie@portfolio:~</span>
+            <button onClick={() => setIsOpen(false)} className="text-zinc-500 hover:text-white text-xs">
+              [Close]
+            </button>
+          </div>
+          <div className="h-48 overflow-y-auto mb-4 space-y-1.5 text-xs">
+            {logs.map((log, index) => (
+              <div key={index} className={log.startsWith(">") ? "text-white" : "text-emerald-400"}>
+                {log}
+              </div>
+            ))}
+          </div>
+          <form onSubmit={handleCommand} className="flex items-center gap-2">
+            <span className="text-emerald-500">&gt;</span>
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="type a command..."
+              className="bg-transparent border-none outline-none text-white w-full text-xs font-mono"
+            />
+          </form>
+        </motion.div>
+      )}
+    </div>
+  );
+}
+
+==========================================
+FILE: components\Testimonial.tsx
+==========================================
+"use client";
+
+import { motion } from "framer-motion";
+import { Quote } from "lucide-react";
+
+export function Testimonial() {
+  return (
+    <section className="mx-auto max-w-4xl px-6 py-20">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="relative rounded-3xl border border-white/10 bg-black/40 p-10 backdrop-blur-md"
+      >
+        <Quote className="h-8 w-8 text-accent" />
+        <p className="mt-6 text-lg text-white/90 md:text-xl">
+          Replace this with an actual quote from your Noodles King client about speed, design quality, and results.
+        </p>
+        <div className="mt-6 flex items-center gap-3">
+          <div className="h-10 w-10 rounded-full bg-accent/20" />
+          <div>
+            <div className="text-sm font-medium text-white">Noodles King</div>
+            <div className="text-xs text-white/60">Restaurant and Online Ordering</div>
+          </div>
+        </div>
+      </motion.div>
+    </section>
+  );
+}
+
+==========================================
+FILE: components\ThemeProvider.tsx
+==========================================
+"use client";
+
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import type { ReactNode } from "react";
+
+export function ThemeProvider({
+  children,
+  forcedTheme,
+}: {
+  children: ReactNode;
+  forcedTheme?: string;
+}) {
+  return (
+    <NextThemesProvider
+      attribute="class"
+      defaultTheme="dark"
+      enableSystem={false}
+      forcedTheme={forcedTheme}
+    >
+      {children}
+    </NextThemesProvider>
+  );
+}
+
+==========================================
+FILE: components\ThemeToggle.tsx
+==========================================
+"use client";
+
+import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
+import { Moon, Sun } from "lucide-react";
+
+export function ThemeToggle() {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+  if (!mounted) {
+    return <div className="h-9 w-9" aria-hidden />;
+  }
+
+  const isDark = theme === "dark";
+
+  return (
+    <button
+      type="button"
+      onClick={() => setTheme(isDark ? "light" : "dark")}
+      className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-text transition-colors hover:border-accent hover:text-accent"
+      aria-label="Toggle theme"
+    >
+      {isDark ? <Sun size={16} /> : <Moon size={16} />}
+    </button>
+  );
+}
+
+==========================================
+FILE: components\TiltCard.tsx
+==========================================
+"use client";
+
+import { useRef } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+
+export function TiltCard({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [8, -8]), {
+    stiffness: 300,
+    damping: 30,
+  });
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-8, 8]), {
+    stiffness: 300,
+    damping: 30,
+  });
+
+  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    const rect = ref.current?.getBoundingClientRect();
+    if (!rect) return;
+    x.set((e.clientX - rect.left) / rect.width - 0.5);
+    y.set((e.clientY - rect.top) / rect.height - 0.5);
+  }
+
+  function handleMouseLeave() {
+    x.set(0);
+    y.set(0);
+  }
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ rotateX, rotateY, transformPerspective: 800 }}
+      className="group relative"
+    >
+      <div
+        className={`relative transition-[border-color,box-shadow] duration-300 group-hover:border-emerald-500/40 group-hover:shadow-[0_0_40px_-8px_rgba(16,185,129,0.45)] ${className}`}
+      >
+        {children}
+      </div>
+    </motion.div>
+  );
+}
+
+==========================================
+FILE: components\VideoBackground.tsx
+==========================================
+export function VideoBackground() {
+  return (
+    <div className="fixed inset-0 -z-10 overflow-hidden">
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="h-full w-full object-cover opacity-70 dark:opacity-80"
+      >
+        <source src="/bg-video.mp4" type="video/mp4" />
+      </video>
+      <div className="absolute inset-0 bg-white/10 dark:bg-black/25" />
+    </div>
+  );
+}
+
+==========================================
+FILE: components\Work.tsx
+==========================================
+"use client";
+
+import { motion } from "framer-motion";
+
+const project = {
+  id: "noodles-king",
+  title: "Noodles King",
+  subtitle: "Featured Client Project • Video Walkthrough",
+  description: "High-performance digital restaurant platform with custom UI micro-interactions, full menu visualization, and seamless mobile-responsive checkout.",
+  tags: ["Live Client", "Next.js 16", "Tailwind CSS", "Framer Motion"],
+  video: "/videos/noodles-king.mp4",
+  poster: "/images/noodles-king-poster.jpg",
+};
+
+export function Work() {
+  return (
+    <section id="work" className="py-24 px-6 max-w-7xl mx-auto">
+      <div className="text-center mb-14">
+        <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-3.5 py-1.5 rounded-full border border-emerald-500/20 inline-block mb-3">
+          Portfolio Showcase
+        </span>
+        <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-3">
+          Selected Work
+        </h2>
+        <p className="text-zinc-400 max-w-xl mx-auto text-sm md:text-base">
+          Large format video demonstration of custom web builds and client projects.
+        </p>
+      </div>
+
+      {/* Showcase Frame */}
+      <div className="max-w-5xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="group relative rounded-3xl bg-zinc-950/80 border border-white/10 overflow-hidden hover:border-emerald-500/50 transition-all duration-500 shadow-[0_0_50px_rgba(0,0,0,0.8)]"
+        >
+          <div className="relative w-full aspect-video md:aspect-[21/9] overflow-hidden bg-zinc-900">
+            <video
+              src={project.video}
+              poster={project.poster}
+              autoPlay
+              loop
+              muted
+              playsInline
+              onTimeUpdate={(e) => {
+                if (e.currentTarget.currentTime >= 10) {
+                  e.currentTarget.currentTime = 0;
+                }
+              }}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out opacity-95 group-hover:opacity-100"
+            />
+            
+            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent pointer-events-none" />
+            
+            <div className="absolute top-6 left-6 flex items-center gap-2 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
+              <span className="text-xs font-mono font-medium text-emerald-300 tracking-wider uppercase">
+                {project.subtitle}
+              </span>
+            </div>
+          </div>
+
+          <div className="p-8 md:p-10 bg-gradient-to-b from-zinc-950/50 to-black">
+            <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+              <h3 className="text-3xl font-extrabold text-white group-hover:text-emerald-400 transition-colors">
+                {project.title}
+              </h3>
+              
+              <div className="flex flex-wrap gap-2">
+                {project.tags.map((tag, idx) => (
+                  <span
+                    key={idx}
+                    className="px-3.5 py-1.5 rounded-full text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <p className="text-zinc-400 text-sm md:text-base max-w-3xl leading-relaxed">
+              {project.description}
+            </p>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+==========================================
+FILE: lib\constants.ts
+==========================================
+export const SITE = {
+  name: "Tommie",
+  fullName: "Tommie.dev",
+  role: "Full Stack Web Developer & UI/UX Designer",
+  tagline: "I build cinematic, high-performance websites that feel custom-crafted, not templated.",
+  email: "hello@tommie.dev",
+};
+
+export const NAV_LINKS = [
+  { label: "Work", href: "#projects" },
+  { label: "About", href: "#about" },
+  { label: "Contact", href: "#contact" },
+];
+

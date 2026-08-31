@@ -5,6 +5,7 @@ import { AudioProvider } from "@/components/AudioProvider";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { CustomCursor } from "@/components/CustomCursor";
 import { BackgroundVideo } from "@/components/BackgroundVideo";
+import { SmoothScroll } from "@/components/SmoothScroll";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className={`${inter.className} bg-black text-white antialiased selection:bg-emerald-500/30 selection:text-emerald-300 relative`}>
         <AudioProvider>
+          <SmoothScroll />
           <BackgroundVideo />
           <ScrollProgress />
           <CustomCursor />

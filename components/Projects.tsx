@@ -25,6 +25,7 @@ export function Projects() {
           <Image
             src="/projects/noodles-king.jpg"
             alt="Noodles King"
+            loading="eager"
             fill
             sizes="(min-width: 768px) 50vw, 100vw"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -32,7 +33,7 @@ export function Projects() {
         </div>
         <div className="flex flex-col justify-center">
           <span className="text-xs uppercase tracking-[0.2em] text-white/70">
-            Flagship Project · Live
+            Flagship Project - Live
           </span>
           <h3 className="mt-3 text-2xl font-semibold text-white md:text-3xl">
             Noodles King
@@ -63,7 +64,7 @@ export function Projects() {
             rel="noopener noreferrer"
             className="rounded-full border border-white/10 px-5 py-2.5 text-sm text-white transition-colors hover:border-accent hover:text-accent"
           >
-            sandramills01 ↗
+            sandramills01 -&gt;
           </a>
           <a
             href="https://ralachips.lovable.app/"
@@ -71,7 +72,7 @@ export function Projects() {
             rel="noopener noreferrer"
             className="rounded-full border border-white/10 px-5 py-2.5 text-sm text-white transition-colors hover:border-accent hover:text-accent"
           >
-            Rala Chips ↗
+            Rala Chips -&gt;
           </a>
         </div>
       </div>

@@ -1,11 +1,11 @@
-import { MetadataRoute } from 'next';
+﻿import { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = 'https://your-portfolio-domain.com';
+  const baseUrl = "https://your-portfolio-domain.com";
   return {
     rules: {
-      userAgent: '*',
-      allow: '/',
+      userAgent: "*",
+      allow: "/",
     },
     sitemap: `${baseUrl}/sitemap.xml`,
   };

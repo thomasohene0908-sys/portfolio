@@ -7,7 +7,7 @@ import { useUIAudio } from "./AudioProvider";
 const faqs = [
   {
     q: "What is your typical turn-around time for a website?",
-    a: "Standard business sites take 1–2 weeks, while custom e-commerce or full-stack web applications take 2–4 weeks from initial kickoff to deployment.",
+    a: "Standard business sites take 1-2 weeks, while custom e-commerce or full-stack web applications take 2-4 weeks from initial kickoff to deployment.",
   },
   {
     q: "Do you handle hosting, domains, and deployment?",
@@ -15,7 +15,7 @@ const faqs = [
   },
   {
     q: "Can I update content on my site after launch?",
-    a: "Absolutly. Every project includes CMS integration (Sanity or custom admin) or an intuitive editing interface so you can update text and images effortlessly.",
+    a: "Absolutely. Every project includes CMS integration (Sanity or custom admin) or an intuitive editing interface so you can update text and images effortlessly.",
   },
   {
     q: "How do payments and project contracts work?",

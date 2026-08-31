@@ -1,48 +1,27 @@
-﻿"use client";
-
-import { motion } from "framer-motion";
-
-const stats = [
-  { label: "Live Client Projects", value: "3+" },
-  { label: "Sites Shipped", value: "5+" },
-  { label: "Full Stack Stack", value: "100%" },
-  { label: "Client Satisfaction", value: "100%" },
-];
-
-export function About() {
+﻿export function About() {
   return (
-    <section id="about" className="py-20 px-6 max-w-6xl mx-auto">
-      <div className="bg-black/40 backdrop-blur-md border border-white/10 p-8 md:p-12 rounded-3xl">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div>
-            <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
-              About Me
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mt-4 mb-4">
-              Engineering sleek digital products with high performance.
-            </h2>
-            <p className="text-zinc-400 text-sm leading-relaxed mb-4">
-              I'm a full-stack developer and UI/UX designer specialized in building modern web applications, e-commerce platforms, and interactive user interfaces using Next.js, TypeScript, and Tailwind CSS.
-            </p>
-            <p className="text-zinc-400 text-sm leading-relaxed">
-              My focus is combining high-end cinematic design with clean code, responsive layouts, and lightning-fast load times.
-            </p>
+    <section id="about" className="relative z-10 bg-transparent text-white py-32 px-6 max-w-5xl mx-auto">
+      <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <span className="text-emerald-400 text-sm font-mono tracking-wider uppercase mb-3 block">01 / Background</span>
+          <h2 className="text-4xl font-bold tracking-tight mb-6">Bridging high-performance code with intentional design.</h2>
+          <p className="text-zinc-300 leading-relaxed mb-6">
+            I am a web designer and builder with a year of hands-on experience building for real clients. I focus on fast, modern websites with clean UI/UX, from first concept through to a live, working product.
+          </p>
+          <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/10 text-sm text-zinc-400">
+            <div><strong className="text-white block text-lg mb-1">1 Year</strong> Building for Clients</div>
+            <div><strong className="text-white block text-lg mb-1">Noodles King</strong> Live E-Commerce Build</div>
           </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            {stats.map((stat, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="p-5 rounded-2xl bg-zinc-900/60 border border-white/5 text-center"
-              >
-                <div className="text-3xl font-bold text-emerald-400 mb-1">{stat.value}</div>
-                <div className="text-xs text-zinc-400">{stat.label}</div>
-              </motion.div>
-            ))}
+        </div>
+        <div className="relative rounded-2xl border border-white/10 bg-black/40 p-6 backdrop-blur-md">
+          <div className="absolute -top-3 -right-3 rounded-full bg-emerald-500/20 border border-emerald-500/40 px-3 py-1 text-xs font-mono text-emerald-400">
+            How I Build
+          </div>
+          <h3 className="text-lg font-semibold mb-4 text-white">Process</h3>
+          <div className="space-y-3 text-sm text-zinc-300">
+            <p><span className="text-white font-medium">Design &amp; Front-End -</span> UI/UX direction, Next.js, Tailwind CSS</p>
+            <p><span className="text-white font-medium">Build Process -</span> concept, design, build, launch</p>
+            <p><span className="text-white font-medium">What I Deliver -</span> fast, modern, conversion-focused sites like Noodles King</p>
           </div>
         </div>
       </div>

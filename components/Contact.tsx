@@ -10,7 +10,7 @@ type Tier = "basic" | "standard" | "premium";
 const PRICING = {
   GH: {
     currency: "GHS",
-    symbol: "GH₵",
+    symbol: "GHS ",
     types: {
       business: { name: "Standard Business", basic: 1500, standard: 3000, premium: 4500 },
       restaurant: { name: "Restaurant & Dining", basic: 2400, standard: 4800, premium: 7200 },
@@ -183,7 +183,7 @@ export function Contact() {
           </div>
 
           <a
-            href={`https://wa.me/?text=${whatsappMessage}`}
+            href={`https://wa.me/233538315085?text=${whatsappMessage}`}
             target="_blank"
             rel="noopener noreferrer"
             onClick={playClick}
