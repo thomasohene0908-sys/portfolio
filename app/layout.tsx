@@ -1,4 +1,5 @@
-﻿import type { Metadata } from "next";
+﻿import { Analytics } from "@vercel/analytics/next";
+import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { AudioProvider } from "@/components/AudioProvider";
@@ -28,8 +29,11 @@ export default function RootLayout({
           <ScrollProgress />
           <CustomCursor />
           {children}
+        <Analytics />
         </AudioProvider>
       </body>
     </html>
   );
 }
+
+
