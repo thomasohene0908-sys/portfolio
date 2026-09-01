@@ -1,19 +1,21 @@
-﻿export function StructuredData() {
+﻿"use client";
+
+export function StructuredData() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
-    "name": "Tommie Portfolio & Web Development",
-    "image": "https://your-portfolio-domain.com/og-image.jpg",
-    "@id": "https://your-portfolio-domain.com",
-    "url": "https://your-portfolio-domain.com",
-    "telephone": "+233500000000",
+    "name": "Tommie.dev - Web Development",
+    "@id": "https://tommie003.vercel.app",
+    "url": "https://tommie003.vercel.app",
+    "telephone": "+233538315085",
     "address": {
       "@type": "PostalAddress",
-      "addressLocality": "Accra",
+      "addressLocality": "Kukurantumi",
+      "addressRegion": "Eastern Region",
       "addressCountry": "GH"
     },
     "priceRange": "$$",
-    "description": "Freelance web designer and full-stack developer building high-performance Next.js applications and automated workflows."
+    "description": "Freelance full-stack developer and UI/UX designer building high-performance Next.js websites and applications."
   };
 
   return (
