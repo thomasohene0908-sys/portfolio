@@ -3,7 +3,7 @@
   fullName: "Tommie.dev",
   role: "Full Stack Web Developer & UI/UX Designer",
   tagline: "I build cinematic, high-performance websites that feel custom-crafted, not templated.",
-  email: "hello@tommie.dev",
+  email: "toamoako.dev@gmail.com",
 };
 
 export const NAV_LINKS = [
