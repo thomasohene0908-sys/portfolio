@@ -19,7 +19,7 @@ export function TerminalModal() {
     if (cmd === "help") {
       response = "Available commands: 'skills', 'about', 'clear', 'contact'";
     } else if (cmd === "skills") {
-      response = "React, Next.js, TypeScript, Tailwind CSS, Framer Motion, Node.js, PostgreSQL";
+      response = "Next.js, TypeScript, Tailwind CSS, Framer Motion, AI-assisted development with Claude";
     } else if (cmd === "about") {
       response = "Tommie - Full-Stack Developer & UI/UX Specialist crafting high-end web builds.";
     } else if (cmd === "contact") {
@@ -43,7 +43,7 @@ export function TerminalModal() {
           onClick={() => setIsOpen(true)}
           className="px-5 py-2.5 bg-black/40 border border-white/10 hover:border-emerald-500/40 rounded-xl text-xs text-zinc-400 hover:text-emerald-400 transition-all backdrop-blur-md"
         >
-          💻 Open Developer Terminal
+          Open Developer Terminal
         </button>
       ) : (
         <motion.div

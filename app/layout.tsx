@@ -3,11 +3,13 @@ import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { StructuredData } from "@/components/StructuredData";
 import { AudioProvider } from "@/components/AudioProvider";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { CustomCursor } from "@/components/CustomCursor";
 import { BackgroundVideo } from "@/components/BackgroundVideo";
 import { SmoothScroll } from "@/components/SmoothScroll";
+import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,14 +31,13 @@ export default function RootLayout({
           <BackgroundVideo />
           <ScrollProgress />
           <CustomCursor />
+          <StructuredData />
           {children}
-        <SpeedInsights />
-        <Analytics />
+          <FloatingWhatsApp />
+          <SpeedInsights />
+          <Analytics />
         </AudioProvider>
       </body>
     </html>
   );
 }
-
-
-

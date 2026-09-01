@@ -5,11 +5,11 @@ import { motion } from "framer-motion";
 const project = {
   id: "noodles-king",
   title: "Noodles King",
-  subtitle: "Featured Client Project • Video Walkthrough",
+  subtitle: "Featured Client Project - Video Walkthrough",
   description: "High-performance digital restaurant platform with custom UI micro-interactions, full menu visualization, and seamless mobile-responsive checkout.",
   tags: ["Live Client", "Next.js 16", "Tailwind CSS", "Framer Motion"],
   video: "/videos/noodles-king.mp4",
-  poster: "/images/noodles-king-poster.jpg",
+  poster: "/projects/noodles-king.jpg",
 };
 
 export function Work() {
@@ -27,7 +27,6 @@ export function Work() {
         </p>
       </div>
 
-      {/* Showcase Frame */}
       <div className="max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 25 }}
@@ -50,9 +49,9 @@ export function Work() {
               }}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out opacity-95 group-hover:opacity-100"
             />
-            
+
             <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent pointer-events-none" />
-            
+
             <div className="absolute top-6 left-6 flex items-center gap-2 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
               <span className="text-xs font-mono font-medium text-emerald-300 tracking-wider uppercase">
@@ -66,7 +65,7 @@ export function Work() {
               <h3 className="text-3xl font-extrabold text-white group-hover:text-emerald-400 transition-colors">
                 {project.title}
               </h3>
-              
+
               <div className="flex flex-wrap gap-2">
                 {project.tags.map((tag, idx) => (
                   <span
