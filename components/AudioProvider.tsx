@@ -10,25 +10,19 @@ interface UIAudioContextType {
   toggleMute: () => void;
 }
 
-const UIAudioContext = createContext<UIAudioContextType>({
+const defaultContext: UIAudioContextType = {
   playHover: () => {},
   playClick: () => {},
   playToggle: () => {},
   isMuted: true,
   toggleMute: () => {},
-});
+};
+
+const UIAudioContext = createContext<UIAudioContextType>(defaultContext);
 
 export function AudioProvider({ children }: { children: React.ReactNode }) {
-  const dummyValue: UIAudioContextType = {
-    playHover: () => {},
-    playClick: () => {},
-    playToggle: () => {},
-    isMuted: true,
-    toggleMute: () => {},
-  };
-
   return (
-    <UIAudioContext.Provider value={dummyValue}>
+    <UIAudioContext.Provider value={defaultContext}>
       {children}
     </UIAudioContext.Provider>
   );
@@ -36,14 +30,5 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
 
 export function useUIAudio() {
   const ctx = useContext(UIAudioContext);
-  if (!ctx) {
-    return {
-      playHover: () => {},
-      playClick: () => {},
-      playToggle: () => {},
-      isMuted: true,
-      toggleMute: () => {},
-    };
-  }
-  return ctx;
+  return ctx || defaultContext;
 }
