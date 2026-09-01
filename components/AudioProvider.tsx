@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext } from "react";
 
-interface UIAudioContextType {
+export interface UIAudioContextType {
   playHover: () => void;
   playClick: () => void;
   playToggle: () => void;
@@ -18,9 +18,9 @@ const defaultContext: UIAudioContextType = {
   toggleMute: () => {},
 };
 
-const UIAudioContext = createContext<UIAudioContextType>(defaultContext);
+export const UIAudioContext = createContext<UIAudioContextType>(defaultContext);
 
-export function AudioProvider({ children }: { children: React.ReactNode }) {
+export function AudioProvider({ children }: { children?: React.ReactNode }) {
   return (
     <UIAudioContext.Provider value={defaultContext}>
       {children}
@@ -32,3 +32,13 @@ export function useUIAudio() {
   const ctx = useContext(UIAudioContext);
   return ctx || defaultContext;
 }
+
+export function useAudio() {
+  return useUIAudio();
+}
+
+export function AudioToggle() {
+  return null;
+}
+
+export default AudioProvider;
