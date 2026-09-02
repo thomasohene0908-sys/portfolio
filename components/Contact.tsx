@@ -208,13 +208,13 @@ export function Contact() {
         </a>
 
         <a
-          href="mailto:hello@tommie.dev"
+          href="mailto:toamoako.dev@gmail.com"
           className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md p-5 transition-colors hover:border-emerald-500/40"
         >
           <Mail className="h-5 w-5 text-emerald-400" />
           <div>
             <div className="text-sm font-medium text-white">Email</div>
-            <div className="text-xs text-zinc-400">hello@tommie.dev</div>
+            <div className="text-xs text-zinc-400">toamoako.dev@gmail.com</div>
           </div>
         </a>
 
@@ -263,3 +263,4 @@ export function Contact() {
     </section>
   );
 }
+

@@ -1,0 +1,2068 @@
+﻿====== FILE: app\layout.tsx ======
+
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import { StructuredData } from "@/components/StructuredData";
+import { AudioProvider } from "@/components/AudioProvider";
+import { ScrollProgress } from "@/components/ScrollProgress";
+import { CustomCursor } from "@/components/CustomCursor";
+import { BackgroundVideo } from "@/components/BackgroundVideo";
+import { SmoothScroll } from "@/components/SmoothScroll";
+import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
+
+const inter = Inter({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+  title: "Tommie.dev - Full Stack Developer & UI/UX Designer",
+  description: "Cinematic, high-performance web development and design portfolio.",
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en" className="dark">
+      <body className={`${inter.className} bg-black text-white antialiased selection:bg-emerald-500/30 selection:text-emerald-300 relative`}>
+        <AudioProvider>
+          <SmoothScroll />
+          <BackgroundVideo />
+          <ScrollProgress />
+          <CustomCursor />
+          <StructuredData />
+          {children}
+          <FloatingWhatsApp />
+          <SpeedInsights />
+          <Analytics />
+        </AudioProvider>
+      </body>
+    </html>
+  );
+}
+
+
+
+====== FILE: app\page.tsx ======
+
+import { Navbar } from "@/components/Navbar";
+import { PrismaHero } from "@/components/PrismaHero";
+import { About } from "@/components/About";
+import { Skills } from "@/components/Skills";
+import { Work } from "@/components/Work";
+import { Projects } from "@/components/Projects";
+import { CaseStudy } from "@/components/CaseStudy";
+import { FAQ } from "@/components/FAQ";
+import { Contact } from "@/components/Contact";
+import { TerminalModal } from "@/components/TerminalModal";
+import { Footer } from "@/components/Footer";
+
+export default function Page() {
+  return (
+    <main className="relative min-h-screen">
+      <Navbar />
+      <PrismaHero />
+      <About />
+      <Skills />
+      <Work />
+      <Projects />
+      <CaseStudy />
+      <FAQ />
+      <Contact />
+      <TerminalModal />
+      <Footer />
+    </main>
+  );
+}
+
+
+
+====== FILE: app\robots.ts ======
+
+import { MetadataRoute } from "next";
+
+export default function robots(): MetadataRoute.Robots {
+  const baseUrl = "https://tommie003.vercel.app";
+  return {
+    rules: {
+      userAgent: "*",
+      allow: "/",
+    },
+    sitemap: `${baseUrl}/sitemap.xml`,
+  };
+}
+
+
+
+====== FILE: app\sitemap.ts ======
+
+import { MetadataRoute } from "next";
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const baseUrl = "https://tommie003.vercel.app";
+  return [
+    {
+      url: baseUrl,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 1.0,
+    },
+  ];
+}
+
+
+
+====== FILE: components\About.tsx ======
+
+export function About() {
+  return (
+    <section id="about" className="relative z-10 bg-transparent text-white py-32 px-6 max-w-5xl mx-auto">
+      <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <span className="text-emerald-400 text-sm font-mono tracking-wider uppercase mb-3 block">01 / Background</span>
+          <h2 className="text-4xl font-bold tracking-tight mb-6">Bridging high-performance code with intentional design.</h2>
+          <p className="text-zinc-300 leading-relaxed mb-6">
+            I am a web designer and builder with a year of hands-on experience building for real clients. I focus on fast, modern websites with clean UI/UX, from first concept through to a live, working product.
+          </p>
+          <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/10 text-sm text-zinc-400">
+            <div><strong className="text-white block text-lg mb-1">1 Year</strong> Building for Clients</div>
+            <div><strong className="text-white block text-lg mb-1">Noodles King</strong> Live E-Commerce Build</div>
+          </div>
+        </div>
+        <div className="relative rounded-2xl border border-white/10 bg-black/40 p-6 backdrop-blur-md">
+          <div className="absolute -top-3 -right-3 rounded-full bg-emerald-500/20 border border-emerald-500/40 px-3 py-1 text-xs font-mono text-emerald-400">
+            How I Build
+          </div>
+          <h3 className="text-lg font-semibold mb-4 text-white">Process</h3>
+          <div className="space-y-3 text-sm text-zinc-300">
+            <p><span className="text-white font-medium">Design &amp; Front-End -</span> UI/UX direction, Next.js, Tailwind CSS</p>
+            <p><span className="text-white font-medium">Build Process -</span> concept, design, build, launch</p>
+            <p><span className="text-white font-medium">What I Deliver -</span> fast, modern, conversion-focused sites like Noodles King</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+
+====== FILE: components\AccessibilityProvider.tsx ======
+
+"use client";
+
+import { useEffect } from "react";
+import { MotionGlobalConfig } from "framer-motion";
+
+export function AccessibilityProvider({ children }: { children: React.ReactNode }) {
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    MotionGlobalConfig.skipAnimations = mediaQuery.matches;
+
+    const handleChange = () => {
+      MotionGlobalConfig.skipAnimations = mediaQuery.matches;
+    };
+
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
+
+  return <>{children}</>;
+}
+
+
+
+====== FILE: components\AnimatedBackground.tsx ======
+
+"use client";
+
+import { useEffect, useRef } from "react";
+
+export function AnimatedBackground() {
+  const vantaRef = useRef(null);
+  const effectRef = useRef<any>(null);
+
+  useEffect(() => {
+    let mounted = true;
+
+    (async () => {
+      const THREE = await import("three");
+      const FOG = (await import("vanta/dist/vanta.fog.min")).default;
+
+      if (mounted && vantaRef.current && !effectRef.current) {
+        effectRef.current = FOG({
+          el: vantaRef.current,
+          THREE,
+          mouseControls: false,
+          touchControls: false,
+          gyroControls: false,
+          minHeight: 200.0,
+          minWidth: 200.0,
+          highlightColor: 0x00e5a8,
+          midtoneColor: 0x2b6cff,
+          lowlightColor: 0x7c3aed,
+          baseColor: 0x080808,
+          blurFactor: 0.65,
+          speed: 1.1,
+          zoom: 0.8,
+        });
+      }
+    })();
+
+    return () => {
+      mounted = false;
+      if (effectRef.current) {
+        effectRef.current.destroy();
+        effectRef.current = null;
+      }
+    };
+  }, []);
+
+  return (
+    <div
+      ref={vantaRef}
+      className="pointer-events-none fixed inset-0 -z-10 opacity-40"
+    />
+  );
+}
+
+
+
+====== FILE: components\AudioProvider.tsx ======
+
+"use client";
+
+import React, { createContext, useContext } from "react";
+
+export interface UIAudioContextType {
+  playHover: () => void;
+  playClick: () => void;
+  playToggle: () => void;
+  isMuted: boolean;
+  toggleMute: () => void;
+}
+
+const defaultContext: UIAudioContextType = {
+  playHover: () => {},
+  playClick: () => {},
+  playToggle: () => {},
+  isMuted: true,
+  toggleMute: () => {},
+};
+
+export const UIAudioContext = createContext<UIAudioContextType>(defaultContext);
+
+export function AudioProvider({ children }: { children?: React.ReactNode }) {
+  return (
+    <UIAudioContext.Provider value={defaultContext}>
+      {children}
+    </UIAudioContext.Provider>
+  );
+}
+
+export function useUIAudio() {
+  const ctx = useContext(UIAudioContext);
+  return ctx || defaultContext;
+}
+
+export function useAudio() {
+  return useUIAudio();
+}
+
+export function AudioToggle() {
+  return null;
+}
+
+export default AudioProvider;
+// Vercel rebuild trigger
+
+
+
+====== FILE: components\BackgroundVideo.tsx ======
+
+export function BackgroundVideo() {
+  return (
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="w-full h-full object-cover opacity-40"
+      >
+        <source src="/bg-video.mp4" type="video/mp4" />
+      </video>
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-[1px]" />
+    </div>
+  );
+}
+
+
+
+
+====== FILE: components\CaseStudy.tsx ======
+
+export function CaseStudy() {
+  return (
+    <section id="case-study" className="relative z-10 bg-transparent text-white py-32 px-6 max-w-5xl mx-auto">
+      <span className="text-emerald-400 text-sm font-mono tracking-wider uppercase mb-3 block">Case Study</span>
+      <h2 className="text-4xl font-bold tracking-tight mb-12">Noodles King</h2>
+
+      <div className="grid md:grid-cols-3 gap-6">
+        <div className="rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md p-6">
+          <span className="text-xs font-mono text-white/50 uppercase tracking-wider mb-3 block">Before</span>
+          <p className="text-zinc-300 leading-relaxed">Noodles King had no website at all. Orders and menu updates ran entirely offline.</p>
+        </div>
+
+        <div className="rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md p-6">
+          <span className="text-xs font-mono text-emerald-400 uppercase tracking-wider mb-3 block">What I Built</span>
+          <p className="text-zinc-300 leading-relaxed">A full ordering flow and live menu display, built to work as their point-of-sale system for daily operations, not just a marketing page.</p>
+        </div>
+
+        <div className="rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md p-6">
+          <span className="text-xs font-mono text-white/50 uppercase tracking-wider mb-3 block">After</span>
+          <p className="text-zinc-300 leading-relaxed">Noodles King now runs everything through the site, orders are up, and it has become core to how the restaurant operates day to day.</p>
+        </div>
+      </div>
+
+      <a href="https://noodlesking.shop" target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex items-center gap-2 text-emerald-400 text-sm font-medium hover:underline">Visit noodlesking.shop</a>
+    </section>
+  );
+}
+
+
+====== FILE: components\CaseStudyBadge.tsx ======
+
+"Intended for future modular project deep dives to convert prospective clients with detailed technical breakdowns."
+export function CaseStudyBadge() {
+  return (
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-400 border border-emerald-500/20">
+      <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+      Verified Case Study
+    </span>
+  );
+}
+
+
+
+====== FILE: components\CodeSandboxModal.tsx ======
+
+"use client";
+
+import { useState } from "react";
+import { Code2, Copy, Check, X } from "lucide-react";
+
+interface CodeSandboxModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  codeSnippet: string;
+  language?: string;
+}
+
+export function CodeSandboxModal({
+  isOpen,
+  onClose,
+  title,
+  codeSnippet,
+  language = "tsx",
+}: CodeSandboxModalProps) {
+  const [copied, setCopied] = useState(false);
+
+  if (!isOpen) return null;
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(codeSnippet);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
+      <div className="relative w-full max-w-2xl rounded-2xl border border-white/10 bg-[#121212] shadow-2xl overflow-hidden">
+        <div className="flex items-center justify-between border-b border-white/10 px-6 py-4 bg-black/40">
+          <div className="flex items-center gap-2 text-white font-mono text-sm">
+            <Code2 className="h-4 w-4 text-emerald-400" />
+            <span>{title}</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleCopy}
+              className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-white/80 hover:bg-white/10 transition-colors"
+            >
+              {copied ? <Check className="h-3.5 w-3.5 text-emerald-400" /> : <Copy className="h-3.5 w-3.5" />}
+              <span>{copied ? "Copied!" : "Copy Code"}</span>
+            </button>
+            <button
+              onClick={onClose}
+              className="rounded-lg p-1.5 text-white/60 hover:bg-white/10 hover:text-white transition-colors"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+        <div className="p-6 overflow-x-auto max-h-[60vh] font-mono text-xs text-emerald-300 bg-black/60">
+          <pre><code>{codeSnippet}</code></pre>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
+====== FILE: components\Contact.tsx ======
+
+"use client";
+
+import { useState } from "react";
+import { Mail, MessageCircle, ChevronDown, Globe, Share2 } from "lucide-react";
+
+type Region = "GH" | "USD";
+type ProjectType = "business" | "restaurant" | "ecommerce" | "webapp";
+type Tier = "basic" | "standard" | "premium";
+
+const PRICING = {
+  GH: {
+    currency: "GHS",
+    symbol: "GHS ",
+    types: {
+      business: { name: "Standard Business", basic: 1500, standard: 3000, premium: 4500 },
+      restaurant: { name: "Restaurant & Dining", basic: 2400, standard: 4800, premium: 7200 },
+      ecommerce: { name: "E-commerce Store", basic: 3600, standard: 7200, premium: 10800 },
+      webapp: { name: "Custom Web Application", basic: 4500, standard: 9000, premium: 13500 },
+    },
+    features: [
+      { id: "seo", label: "Advanced SEO & Meta Setup", cost: 500 },
+      { id: "cms", label: "Content Management System (CMS)", cost: 800 },
+      { id: "booking", label: "Online Booking / Reservation System", cost: 1000 },
+      { id: "analytics", label: "Analytics & Conversion Tracking", cost: 400 },
+    ],
+  },
+  USD: {
+    currency: "USD",
+    symbol: "$",
+    types: {
+      business: { name: "Standard Business", basic: 300, standard: 600, premium: 900 },
+      restaurant: { name: "Restaurant & Dining", basic: 480, standard: 960, premium: 1440 },
+      ecommerce: { name: "E-commerce Store", basic: 720, standard: 1440, premium: 2160 },
+      webapp: { name: "Custom Web Application", basic: 900, standard: 1800, premium: 2700 },
+    },
+    features: [
+      { id: "seo", label: "Advanced SEO & Meta Setup", cost: 100 },
+      { id: "cms", label: "Content Management System (CMS)", cost: 160 },
+      { id: "booking", label: "Online Booking / Reservation System", cost: 200 },
+      { id: "analytics", label: "Analytics & Conversion Tracking", cost: 80 },
+    ],
+  },
+};
+
+function EstimateCalculator() {
+  const [region, setRegion] = useState<Region>("GH");
+  const [projectType, setProjectType] = useState<ProjectType>("business");
+  const [tier, setTier] = useState<Tier>("basic");
+  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
+
+  const config = PRICING[region];
+  const baseCost = config.types[projectType][tier];
+  const featureCost = selectedFeatures.reduce((sum, fId) => {
+    const feat = config.features.find((f) => f.id === fId);
+    return sum + (feat ? feat.cost : 0);
+  }, 0);
+
+  const totalEstimate = baseCost + featureCost;
+
+  function toggleFeature(fId: string) {
+    setSelectedFeatures((prev) =>
+      prev.includes(fId) ? prev.filter((id) => id !== fId) : [...prev, fId]
+    );
+  }
+
+  const whatsappMessage = encodeURIComponent(
+    `Hi Tommie! I evaluated a project estimate on your website:\n` +
+    `- Region: ${region === "GH" ? "Ghana (GHS)" : "International (USD)"}\n` +
+    `- Type: ${config.types[projectType].name}\n` +
+    `- Tier: ${tier.toUpperCase()}\n` +
+    `- Add-ons: ${selectedFeatures.length > 0 ? selectedFeatures.join(", ") : "None"}\n` +
+    `- Total Estimate: ${config.symbol}${totalEstimate.toLocaleString()}\n\n` +
+    `I would like to discuss building this for my business!`
+  );
+
+  return (
+    <div className="bg-black/40 backdrop-blur-md border border-white/10 p-8 rounded-2xl">
+      <div className="flex justify-between items-center mb-8 border-b border-white/10 pb-6">
+        <span className="text-sm font-semibold text-zinc-300">Select Region / Currency:</span>
+        <div className="flex gap-2">
+          <button
+            onClick={() => setRegion("GH")}
+            className={`px-4 py-2 rounded-xl text-sm transition-all ${
+              region === "GH" ? "bg-emerald-500 text-black font-semibold" : "bg-zinc-800 text-zinc-300"
+            }`}
+          >
+            Ghana (GHS)
+          </button>
+          <button
+            onClick={() => setRegion("USD")}
+            className={`px-4 py-2 rounded-xl text-sm transition-all ${
+              region === "USD" ? "bg-emerald-500 text-black font-semibold" : "bg-zinc-800 text-zinc-300"
+            }`}
+          >
+            International (USD)
+          </button>
+        </div>
+      </div>
+
+      <div className="mb-8">
+        <label className="block text-sm font-semibold text-zinc-300 mb-3">1. Select Project Type</label>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {(Object.keys(config.types) as ProjectType[]).map((type) => (
+            <button
+              key={type}
+              onClick={() => setProjectType(type)}
+              className={`p-3 rounded-xl border text-sm text-left transition-all ${
+                projectType === type
+                  ? "border-emerald-500 bg-emerald-500/10 text-white"
+                  : "border-white/10 bg-zinc-900/50 text-zinc-400"
+              }`}
+            >
+              {config.types[type].name}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="mb-8">
+        <label className="block text-sm font-semibold text-zinc-300 mb-3">2. Select Package Tier</label>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {(["basic", "standard", "premium"] as Tier[]).map((t) => (
+            <button
+              key={t}
+              onClick={() => setTier(t)}
+              className={`p-4 rounded-xl border text-left transition-all ${
+                tier === t
+                  ? "border-emerald-500 bg-emerald-500/10 text-white"
+                  : "border-white/10 bg-zinc-900/50 text-zinc-400"
+              }`}
+            >
+              <div className="font-semibold capitalize text-base text-white">{t}</div>
+              <div className="text-xl font-bold text-emerald-400 mt-1">
+                {config.symbol}{config.types[projectType][t].toLocaleString()}
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="mb-8">
+        <label className="block text-sm font-semibold text-zinc-300 mb-3">3. Optional Add-ons</label>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {config.features.map((feat) => {
+            const isSelected = selectedFeatures.includes(feat.id);
+            return (
+              <button
+                key={feat.id}
+                onClick={() => toggleFeature(feat.id)}
+                className={`p-3 rounded-xl border text-sm flex justify-between items-center transition-all ${
+                  isSelected
+                    ? "border-emerald-500 bg-emerald-500/10 text-white"
+                    : "border-white/10 bg-zinc-900/50 text-zinc-400"
+                }`}
+              >
+                <span>{feat.label}</span>
+                <span className="text-emerald-400 font-semibold">+{config.symbol}{feat.cost}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div>
+          <span className="text-sm text-zinc-400 block">Estimated Total</span>
+          <span className="text-3xl font-extrabold text-white">
+            {config.symbol}{totalEstimate.toLocaleString()}
+          </span>
+        </div>
+
+        <a
+          href={`https://wa.me/233538315085?text=${whatsappMessage}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full md:w-auto px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-black font-bold rounded-xl text-center transition-all shadow-lg shadow-emerald-500/20"
+        >
+          Send Estimate via WhatsApp
+        </a>
+      </div>
+    </div>
+  );
+}
+
+export function Contact() {
+  const [showEstimator, setShowEstimator] = useState(false);
+
+  return (
+    <section id="contact" className="py-20 px-6 max-w-5xl mx-auto">
+      <div className="text-center mb-12">
+        <span className="text-xs uppercase tracking-[0.2em] text-emerald-400">Contact</span>
+        <h2 className="mt-4 text-3xl font-bold text-white">Have a project in mind?</h2>
+        <p className="mt-3 text-zinc-400">Reach out directly, or get an instant price estimate below.</p>
+      </div>
+
+      <div className="mx-auto mb-10 grid max-w-2xl gap-4 sm:grid-cols-2">
+        <a
+          href="https://wa.me/233538315085"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md p-5 transition-colors hover:border-emerald-500/40"
+        >
+          <MessageCircle className="h-5 w-5 text-emerald-400" />
+          <div>
+            <div className="text-sm font-medium text-white">WhatsApp</div>
+            <div className="text-xs text-zinc-400">+233 53 831 5085</div>
+          </div>
+        </a>
+
+        <a
+          href="mailto:hello@tommie.dev"
+          className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md p-5 transition-colors hover:border-emerald-500/40"
+        >
+          <Mail className="h-5 w-5 text-emerald-400" />
+          <div>
+            <div className="text-sm font-medium text-white">Email</div>
+            <div className="text-xs text-zinc-400">hello@tommie.dev</div>
+          </div>
+        </a>
+
+        <a
+          href="https://github.com/thomasohene0908-sys"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md p-5 transition-colors hover:border-emerald-500/40"
+        >
+          <Globe className="h-5 w-5 text-emerald-400" />
+          <div>
+            <div className="text-sm font-medium text-white">GitHub</div>
+            <div className="text-xs text-zinc-400">thomasohene0908-sys</div>
+          </div>
+        </a>
+
+        <a
+          href="https://web.facebook.com/profile.php?id=61592102204325"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md p-5 transition-colors hover:border-emerald-500/40"
+        >
+          <Share2 className="h-5 w-5 text-emerald-400" />
+          <div>
+            <div className="text-sm font-medium text-white">Facebook</div>
+            <div className="text-xs text-zinc-400">Message me directly</div>
+          </div>
+        </a>
+      </div>
+
+      <div className="mx-auto max-w-2xl">
+        <button
+          onClick={() => setShowEstimator((v) => !v)}
+          className="flex w-full items-center justify-between rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md p-5 text-left transition-colors hover:border-emerald-500/40"
+        >
+          <span className="text-sm font-medium text-white">Want a rough price first? Try the instant estimator</span>
+          <ChevronDown className={`h-4 w-4 text-emerald-400 transition-transform ${showEstimator ? "rotate-180" : ""}`} />
+        </button>
+
+        {showEstimator && (
+          <div className="mt-4">
+            <EstimateCalculator />
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+
+
+====== FILE: components\CustomCursor.tsx ======
+
+"use client";
+
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+
+export function CustomCursor() {
+  const [position, setPosition] = useState({ x: -100, y: -100 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    const onMouseMove = (e: MouseEvent) => {
+      setPosition({ x: e.clientX, y: e.clientY });
+    };
+
+    const onMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest("button, a, input, [role='button']")) {
+        setIsHovered(true);
+      } else {
+        setIsHovered(false);
+      }
+    };
+
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseover", onMouseOver);
+
+    return () => {
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseover", onMouseOver);
+    };
+  }, []);
+
+  return (
+    <motion.div
+      className="fixed top-0 left-0 w-8 h-8 rounded-full border border-emerald-400/60 bg-emerald-500/10 pointer-events-none z-50 backdrop-blur-[1px] shadow-[0_0_15px_rgba(16,185,129,0.3)] hidden md:block"
+      animate={{
+        x: position.x - 16,
+        y: position.y - 16,
+        scale: isHovered ? 1.8 : 1,
+        borderColor: isHovered ? "rgba(16, 185, 129, 0.9)" : "rgba(16, 185, 129, 0.4)",
+      }}
+      transition={{ type: "spring", stiffness: 250, damping: 20, mass: 0.2 }}
+    />
+  );
+}
+
+
+
+====== FILE: components\FAQ.tsx ======
+
+"use client";
+
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useUIAudio } from "./AudioProvider";
+
+const faqs = [
+  {
+    q: "What is your typical turn-around time for a website?",
+    a: "Standard business sites take 1-2 weeks, while custom e-commerce or full-stack web applications take 2-4 weeks from initial kickoff to deployment.",
+  },
+  {
+    q: "Do you handle hosting, domains, and deployment?",
+    a: "Yes. I manage complete setup on Vercel, AWS, or custom servers, connect your custom domains, and set up SSL security certificates.",
+  },
+  {
+    q: "Can I update content on my site after launch?",
+    a: "Absolutely. Every project includes CMS integration (Sanity or custom admin) or an intuitive editing interface so you can update text and images effortlessly.",
+  },
+  {
+    q: "How do payments and project contracts work?",
+    a: "Projects operate on a standard 50% initial deposit and 50% upon final launch verification. Estimates generated on-site link directly to WhatsApp to kick off discussion.",
+  },
+];
+
+export function FAQ() {
+  const { playClick, playHover } = useUIAudio();
+  const [openIdx, setOpenIdx] = useState<number | null>(null);
+
+  const toggle = (idx: number) => {
+    playClick();
+    setOpenIdx(openIdx === idx ? null : idx);
+  };
+
+  return (
+    <section id="faq" className="py-20 px-6 max-w-4xl mx-auto">
+      <div className="text-center mb-12">
+        <h2 className="text-3xl font-bold text-white mb-2">Frequently Asked Questions</h2>
+        <p className="text-zinc-400">Everything you need to know about starting a project.</p>
+      </div>
+
+      <div className="space-y-4">
+        {faqs.map((faq, i) => {
+          const isOpen = openIdx === i;
+          return (
+            <div
+              key={i}
+              className="rounded-2xl bg-black/40 backdrop-blur-md border border-white/10 overflow-hidden transition-all hover:border-emerald-500/30"
+            >
+              <button
+                onClick={() => toggle(i)}
+                onMouseEnter={playHover}
+                className="w-full p-6 text-left flex justify-between items-center text-white font-medium"
+              >
+                <span>{faq.q}</span>
+                <span className={`text-emerald-400 transition-transform duration-300 text-xl ${isOpen ? "rotate-45" : ""}`}>
+                  +
+                </span>
+              </button>
+
+              <AnimatePresence>
+                {isOpen && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="px-6 pb-6 text-sm text-zinc-400 border-t border-white/5 pt-4"
+                  >
+                    {faq.a}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+
+
+====== FILE: components\FloatingWhatsApp.tsx ======
+
+"use client";
+
+import { MessageCircle } from "lucide-react";
+
+export function FloatingWhatsApp() {
+  const phoneNumber = "233538315085";
+  const message = encodeURIComponent("Hi Tommie, I checked your portfolio and want to discuss a project.");
+
+  return (
+    <a
+      href={`https://wa.me/${phoneNumber}?text=${message}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Chat on WhatsApp"
+      className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500 text-black shadow-lg shadow-emerald-500/20 transition-transform duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+    >
+      <MessageCircle className="h-7 w-7 fill-black text-emerald-500" />
+    </a>
+  );
+}
+
+
+
+====== FILE: components\Footer.tsx ======
+
+"use client";
+
+import { useEffect, useState } from "react";
+
+function useFps() {
+  const [fps, setFps] = useState(60);
+  useEffect(() => {
+    let frameCount = 0;
+    let lastTime = performance.now();
+    let raf: number;
+    function loop(now: number) {
+      frameCount++;
+      if (now - lastTime >= 1000) {
+        setFps(frameCount);
+        frameCount = 0;
+        lastTime = now;
+      }
+      raf = requestAnimationFrame(loop);
+    }
+    raf = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+  return fps;
+}
+
+export function Footer() {
+  const fps = useFps();
+
+  return (
+    <footer className="border-t border-white/10">
+      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-10 text-sm text-white/70 md:flex-row">
+        <span>Copyright Tommie.dev. All rights reserved.</span>
+        <span className="text-xs text-white/50">{fps} FPS</span>
+        <span>Built with Next.js and Framer Motion.</span>
+      </div>
+    </footer>
+  );
+}
+
+
+
+====== FILE: components\Hero.tsx ======
+
+"use client";
+
+import { motion } from "framer-motion";
+import { MagneticButton } from "./MagneticButton";
+import { useUIAudio } from "./AudioProvider";
+
+export function Hero() {
+  const { playClick, playHover } = useUIAudio();
+
+  return (
+    <section id="hero" className="relative min-h-screen flex flex-col justify-center items-center text-center px-6 pt-20 pb-16 overflow-hidden">
+      {/* Ambient Glowing Orbs */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-emerald-500/15 rounded-full blur-[120px] pointer-events-none animate-pulse z-0" />
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="max-w-4xl z-10 relative"
+      >
+        {/* Availability Badge */}
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-8 backdrop-blur-md">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+          <span>Available for Freelance Projects</span>
+        </div>
+
+        {/* Headline */}
+        <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-white tracking-tight mb-6 leading-[1.1]">
+          Crafting <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-200 bg-clip-text text-transparent">cinematic digital</span> web experiences.
+        </h1>
+
+        {/* Subtitle */}
+        <p className="text-zinc-400 text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
+          Full-stack developer & UI/UX specialist crafting high-performance Next.js builds and interactive web applications.
+        </p>
+
+        {/* Magnetic CTA Buttons */}
+        <div className="flex flex-wrap justify-center items-center gap-4">
+          <MagneticButton>
+            <a
+              href="#work"
+              onClick={playClick}
+              onMouseEnter={playHover}
+              className="px-8 py-4 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-sm transition-all duration-300 shadow-[0_0_25px_rgba(16,185,129,0.35)] block"
+            >
+              View my work
+            </a>
+          </MagneticButton>
+
+          <MagneticButton>
+            <a
+              href="#contact"
+              onClick={playClick}
+              onMouseEnter={playHover}
+              className="px-8 py-4 rounded-2xl bg-black/50 hover:bg-white/10 text-white font-medium text-sm border border-white/10 transition-all duration-300 backdrop-blur-md block hover:border-white/20"
+            >
+              Let's Talk
+            </a>
+          </MagneticButton>
+        </div>
+      </motion.div>
+    </section>
+  );
+}
+
+
+
+====== FILE: components\LiquidGlassCard.tsx ======
+
+"use client";
+
+import { useRef, useState } from "react";
+import { motion } from "framer-motion";
+
+export function LiquidGlassCard({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [spotlight, setSpotlight] = useState({ x: 0, y: 0, opacity: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    setSpotlight({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+      opacity: 1,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setSpotlight((prev) => ({ ...prev, opacity: 0 }));
+  };
+
+  return (
+    <motion.div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      whileHover={{ y: -4, scale: 1.01 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      className={`relative rounded-3xl bg-white/[0.04] backdrop-blur-2xl backdrop-saturate-200 border border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.4)] overflow-hidden transition-all duration-300 hover:border-emerald-400/50 hover:shadow-[0_0_35px_rgba(16,185,129,0.25)] ${className}`}
+    >
+      {/* Specular Liquid Light Follower */}
+      <div
+        className="pointer-events-none absolute -inset-px transition-opacity duration-300"
+        style={{
+          opacity: spotlight.opacity,
+          background: `radial-gradient(500px circle at ${spotlight.x}px ${spotlight.y}px, rgba(16, 185, 129, 0.2), rgba(255, 255, 255, 0.08) 35%, transparent 75%)`,
+        }}
+      />
+
+      {/* Curved Reflection Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-black/50 pointer-events-none" />
+
+      <div className="relative z-10">{children}</div>
+    </motion.div>
+  );
+}
+
+
+
+====== FILE: components\MagneticButton.tsx ======
+
+"use client";
+
+import { useRef, useState } from "react";
+import { motion } from "framer-motion";
+
+export function MagneticButton({ children, className = "", onClick }: { children: React.ReactNode; className?: string; onClick?: () => void }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const { clientX, clientY } = e;
+    const { left, top, width, height } = ref.current?.getBoundingClientRect() || { left: 0, top: 0, width: 0, height: 0 };
+    const middleX = clientX - (left + width / 2);
+    const middleY = clientY - (top + height / 2);
+    setPosition({ x: middleX * 0.25, y: middleY * 0.25 });
+  };
+
+  const handleMouseLeave = () => {
+    setPosition({ x: 0, y: 0 });
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      animate={{ x: position.x, y: position.y }}
+      transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
+      className={`inline-block cursor-pointer ${className}`}
+      onClick={onClick}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+
+
+====== FILE: components\Navbar.tsx ======
+
+"use client";
+
+import { NAV_LINKS } from "@/lib/constants";
+import { useEffect, useState } from "react";
+import { Volume2, VolumeX } from "lucide-react";
+import { useUIAudio } from "./AudioProvider";
+
+function useAccraTime() {
+  const [time, setTime] = useState("");
+  useEffect(() => {
+    function update() {
+      setTime(
+        new Intl.DateTimeFormat("en-GB", {
+          hour: "2-digit",
+          minute: "2-digit",
+          timeZone: "Africa/Accra",
+          hour12: false,
+        }).format(new Date())
+      );
+    }
+    update();
+    const id = setInterval(update, 30000);
+    return () => clearInterval(id);
+  }, []);
+  return time;
+}
+
+export function Navbar() {
+  const time = useAccraTime();
+  const { enabled, toggle, playClick, playHover } = useUIAudio();
+
+  return (
+    <header className="fixed left-0 top-0 z-40 w-full border-b border-white/10 bg-white/10 backdrop-blur-md dark:border-white/10 dark:bg-black/25">
+      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <a href="#top" onMouseEnter={playHover} className="text-lg font-semibold tracking-tight text-text">
+          Tommie<span className="text-accent">.</span>
+        </a>
+
+        <ul className="hidden items-center gap-8 md:flex">
+          {NAV_LINKS.map((link) => (
+            <li key={link.href}>
+              <a
+                href={link.href}
+                onMouseEnter={playHover}
+                onClick={playClick}
+                className="text-sm text-muted transition-colors hover:text-text"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+
+        <div className="flex items-center gap-3">
+          <div className="hidden items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-white/80 lg:flex">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+            </span>
+            Available for Q3 Projects GMT {time}
+          </div>
+
+          <button
+            onClick={toggle}
+            aria-label={enabled ? "Mute UI sounds" : "Enable UI sounds"}
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 transition-colors hover:text-accent"
+          >
+            {enabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
+          </button>
+
+          <a
+            href="#contact"
+            onMouseEnter={playHover}
+            onClick={playClick}
+            className="rounded-full bg-accent px-5 py-2 text-sm font-medium text-[#080808] transition-transform hover:scale-105"
+          >
+            Lets Talk
+          </a>
+        </div>
+      </nav>
+    </header>
+  );
+}
+
+
+
+====== FILE: components\Playground.tsx ======
+
+export function Playground() { return <section className="relative z-10 bg-transparent text-white py-24 px-6 max-w-4xl mx-auto"><h2 className="text-3xl font-bold mb-6">Playground</h2><p className="text-zinc-300">Interactive experiments and UI tests.</p></section>; }
+
+
+
+====== FILE: components\PrismaHero.tsx ======
+
+"use client";
+
+import { motion, useInView } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import { useRef } from "react";
+
+interface WordsPullUpProps {
+  text: string;
+  className?: string;
+}
+
+function WordsPullUp({ text, className = "" }: WordsPullUpProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true });
+  const words = text.split(" ");
+
+  return (
+    <div ref={ref} className={`inline-flex flex-wrap ${className}`}>
+      {words.map((word, i) => (
+        <motion.span
+          key={i}
+          initial={{ y: 20, opacity: 0 }}
+          animate={isInView ? { y: 0, opacity: 1 } : {}}
+          transition={{ duration: 0.6, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+          className="inline-block"
+          style={{ marginRight: "0.2em" }}
+        >
+          {word}
+        </motion.span>
+      ))}
+    </div>
+  );
+}
+
+const navItems = ["Work", "About", "Skills", "Contact"];
+
+export function PrismaHero() {
+  return (
+    <section id="top" className="h-screen w-full">
+      <div className="relative h-full w-full overflow-hidden">
+
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 h-full w-full object-cover"
+        >
+          <source src="/bg-video.mp4" type="video/mp4" />
+        </video>
+
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/70" />
+
+        <nav className="absolute left-1/2 top-6 z-20 -translate-x-1/2">
+          <div className="flex items-center gap-4 rounded-full border border-white/20 bg-black/40 px-6 py-2 backdrop-blur-md sm:gap-8">
+            {navItems.map((item) => (
+              <a
+                key={item}
+                href={`#${item.toLowerCase()}`}
+                className="text-xs text-white/70 transition-colors hover:text-white sm:text-sm"
+              >
+                {item}
+              </a>
+            ))}
+          </div>
+        </nav>
+
+        <div className="absolute bottom-0 left-0 right-0 z-10 px-4 pb-10 sm:px-6 md:px-10">
+          <div className="grid grid-cols-12 items-end gap-4">
+            <div className="col-span-12 lg:col-span-8">
+              <h1 className="font-[family-name:var(--font-heading)] font-medium leading-[0.85] tracking-[-0.03em] text-white text-[13vw] sm:text-[11vw] md:text-[9vw] lg:text-[7.5vw]" style={{ textShadow: "0 4px 24px rgba(0,0,0,0.35)" }}>
+                <WordsPullUp text="Tommie.dev" />
+              </h1>
+            </div>
+
+            <div className="col-span-12 flex flex-col gap-5 pb-2 lg:col-span-4">
+              <motion.p
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                className="text-sm text-white/80 md:text-base"
+              >
+                Full-stack developer and UI/UX designer building
+                cinematic, high-performance websites that feel
+                custom-crafted, not templated.
+              </motion.p>
+
+              <motion.a
+                href="#projects"
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                className="group inline-flex items-center gap-2 self-start rounded-full bg-accent py-1 pl-5 pr-1 text-sm font-medium text-[#080808] transition-all hover:gap-3"
+              >
+                View my work
+                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#080808] transition-transform group-hover:scale-110">
+                  <ArrowRight className="h-4 w-4 text-accent" />
+                </span>
+              </motion.a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+
+====== FILE: components\Process.tsx ======
+
+export function Process() { return <section className="relative z-10 bg-transparent text-white py-24 px-6 max-w-4xl mx-auto"><h2 className="text-3xl font-bold mb-6">Process</h2><p className="text-zinc-300">Discovery, Design, Development, Launch.</p></section>; }
+
+
+
+====== FILE: components\Projects.tsx ======
+
+"use client";
+
+import Image from "next/image";
+import { motion } from "framer-motion";
+
+export function Projects() {
+  return (
+    <section id="projects" className="mx-auto max-w-6xl px-6 py-28">
+      <div className="mb-16 max-w-2xl">
+        <span className="text-xs uppercase tracking-[0.2em] text-accent">
+          Selected Work
+        </span>
+        <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-4xl">
+          Case studies, not just screenshots.
+        </h2>
+      </div>
+
+      <a
+        href="https://noodlesking.shop"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group mb-8 grid gap-8 rounded-3xl border border-white/10 bg-black/40 backdrop-blur-md p-8 md:grid-cols-2 md:p-12"
+      >
+        <div className="relative aspect-video overflow-hidden rounded-2xl bg-background">
+          <Image
+            src="/projects/noodles-king.jpg"
+            alt="Noodles King"
+            loading="eager"
+            fill
+            sizes="(min-width: 768px) 50vw, 100vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        </div>
+        <div className="flex flex-col justify-center">
+          <span className="text-xs uppercase tracking-[0.2em] text-white/70">
+            Flagship Project - Live
+          </span>
+          <h3 className="mt-3 text-2xl font-semibold text-white md:text-3xl">
+            Noodles King
+          </h3>
+          <p className="mt-4 text-white/70">
+            Built for a live e-commerce brand, currently serving real customers.
+            A full storefront built to feel premium from the first scroll, fast,
+            cinematic, and built to convert.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-2">
+            {["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"].map((t) => (
+              <span key={t} className="rounded-full border border-white/10 px-3 py-1 text-xs text-white/70">
+                {t}
+              </span>
+            ))}
+          </div>
+        </div>
+      </a>
+
+      <div>
+        <span className="text-xs uppercase tracking-[0.2em] text-white/70">
+          Also shipped
+        </span>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <a
+            href="https://sandramills01.bolt.host/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full border border-white/10 px-5 py-2.5 text-sm text-white transition-colors hover:border-accent hover:text-accent"
+          >
+            sandramills01 -&gt;
+          </a>
+          <a
+            href="https://ralachips.lovable.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full border border-white/10 px-5 py-2.5 text-sm text-white transition-colors hover:border-accent hover:text-accent"
+          >
+            Rala Chips -&gt;
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+
+
+====== FILE: components\Roadmap.tsx ======
+
+export function Roadmap() { return <section className="relative z-10 bg-transparent text-white py-24 px-6 max-w-4xl mx-auto"><h2 className="text-3xl font-bold mb-6">Roadmap</h2><p className="text-zinc-300">Upcoming features and timelines.</p></section>; }
+
+
+
+====== FILE: components\ScrollProgress.tsx ======
+
+"use client";
+
+import { motion, useScroll, useSpring } from "framer-motion";
+
+export function ScrollProgress() {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  });
+
+  return (
+    <motion.div
+      className="fixed top-0 left-0 right-0 h-1 bg-emerald-500 origin-left z-50 shadow-[0_0_12px_#10b981]"
+      style={{ scaleX }}
+    />
+  );
+}
+
+
+
+====== FILE: components\Skills.tsx ======
+
+export function Skills() {
+  return (
+    <section id="skills" className="relative z-10 bg-transparent text-white py-32 px-6 max-w-5xl mx-auto">
+      <span className="text-accent text-sm font-mono tracking-wider uppercase mb-3 block">02 / Toolkit</span>
+      <h2 className="text-4xl font-bold tracking-tight mb-12">The Tools Behind the Build</h2>
+
+      <div className="grid md:grid-cols-3 gap-6">
+        <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-md">
+          <h3 className="text-lg font-semibold mb-4 text-white border-b border-white/10 pb-3">Frontend Craft</h3>
+          <ul className="space-y-2 text-sm text-zinc-300">
+            <li>- Next.js (App Router)</li>
+            <li>- TypeScript</li>
+            <li>- Tailwind CSS</li>
+            <li>- Framer Motion animation</li>
+          </ul>
+        </div>
+
+        <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-md">
+          <h3 className="text-lg font-semibold mb-4 text-white border-b border-white/10 pb-3">Tooling &amp; Workflow</h3>
+          <ul className="space-y-2 text-sm text-zinc-300">
+            <li>- Git and GitHub</li>
+            <li>- Vercel deployment</li>
+            <li>- AI-assisted development with Claude</li>
+            <li>- Iterative client feedback loops</li>
+          </ul>
+        </div>
+
+        <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-md">
+          <h3 className="text-lg font-semibold mb-4 text-white border-b border-white/10 pb-3">What Sets It Apart</h3>
+          <ul className="space-y-2 text-sm text-zinc-300">
+            <li>- Cinematic video backgrounds</li>
+            <li>- Glassmorphic UI design</li>
+            <li>- Performance-first builds</li>
+            <li>- Direct WhatsApp communication</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+
+====== FILE: components\SmoothScroll.tsx ======
+
+"use client";
+
+import { useEffect } from "react";
+import Lenis from "lenis";
+
+export function SmoothScroll() {
+  useEffect(() => {
+    const lenis = new Lenis({ duration: 1.1 });
+    let frameId: number;
+    function raf(time: number) {
+      lenis.raf(time);
+      frameId = requestAnimationFrame(raf);
+    }
+    frameId = requestAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(frameId);
+      lenis.destroy();
+    };
+  }, []);
+
+  return null;
+}
+
+
+
+====== FILE: components\StoryTransformation.tsx ======
+
+"use client";
+
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { TrendingUp, Users, ShoppingBag } from "lucide-react";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
+export function StoryTransformation() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const stagnantRef = useRef<HTMLDivElement>(null);
+  const phoneRef = useRef<HTMLDivElement>(null);
+  const boomingRef = useRef<HTMLDivElement>(null);
+  const barRef = useRef<HTMLDivElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.set(boomingRef.current, { clipPath: "circle(0% at 50% 100%)" });
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "+=3200",
+          scrub: 1,
+          pin: true,
+        },
+      });
+
+      tl.to(phoneRef.current, { opacity: 1, scale: 1, y: 0, duration: 1 })
+        .to(".chat-client", { opacity: 1, duration: 0.5 })
+        .to(".chat-response", { opacity: 1, duration: 0.5 })
+        .to(phoneRef.current, { opacity: 0, scale: 0.5, duration: 0.4 })
+        .to(stagnantRef.current, { filter: "grayscale(0%)", duration: 1.2 }, "<")
+        .to(boomingRef.current, { clipPath: "circle(150% at 50% 100%)", duration: 1.4 }, "<")
+        .fromTo(barRef.current, { height: 0 }, { height: 160, duration: 1 }, "-=0.6")
+        .from(".badge", { opacity: 0, scale: 0, y: 20, stagger: 0.15, ease: "elastic.out(1,0.6)" }, "-=0.4")
+        .fromTo(ctaRef.current, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 1 });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section ref={containerRef} className="story-container relative h-[500vh]">
+      <div className="sticky top-0 h-screen overflow-hidden bg-background">
+
+        <div
+          ref={stagnantRef}
+          className="stagnant-canvas absolute inset-0 flex items-center justify-center grayscale"
+        >
+          <div className="grid w-full max-w-4xl grid-cols-3 gap-4 p-10">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="h-28 rounded-xl border border-border bg-surface" />
+            ))}
+          </div>
+          <div className="absolute left-10 top-10 animate-pulse rounded-full border border-red-500 px-4 py-2 text-xs text-red-400">
+            0 Users Active
+          </div>
+        </div>
+
+        <div
+          ref={boomingRef}
+          className="booming-dashboard absolute inset-0 flex flex-col items-center justify-center gap-10 bg-background"
+        >
+          <div className="grid w-full max-w-4xl grid-cols-3 gap-4 px-10">
+            <div className="flex h-32 flex-col justify-between rounded-xl border border-accent bg-surface p-4">
+              <Users size={18} className="text-accent" />
+              <div>
+                <div className="text-xl font-semibold text-text">1,204</div>
+                <div className="text-xs text-muted">Active Users</div>
+              </div>
+            </div>
+            <div className="flex h-32 flex-col justify-between rounded-xl border border-accent bg-surface p-4">
+              <ShoppingBag size={18} className="text-accent" />
+              <div>
+                <div className="text-xl font-semibold text-text">312</div>
+                <div className="text-xs text-muted">Orders Today</div>
+              </div>
+            </div>
+            <div className="flex h-32 flex-col justify-between rounded-xl border border-accent bg-surface p-4">
+              <TrendingUp size={18} className="text-accent" />
+              <div>
+                <div className="text-xl font-semibold text-text">+500%</div>
+                <div className="text-xs text-muted">Traffic Growth</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative flex h-48 items-end">
+            <div ref={barRef} className="w-16 rounded-t-lg bg-accent" style={{ height: 0 }} />
+          </div>
+
+          <div className="badge absolute left-[8%] top-[15%] rounded-full bg-accent px-4 py-2 text-xs font-medium text-[#080808]">
+            New Order: $150
+          </div>
+          <div className="badge absolute right-[8%] top-[20%] rounded-full bg-accent px-4 py-2 text-xs font-medium text-[#080808]">
+            Lead Captured!
+          </div>
+        </div>
+
+        <div
+          ref={phoneRef}
+          className="phone-trigger absolute bottom-10 right-10 z-10 w-72 scale-50 rounded-3xl border border-border bg-surface p-4 opacity-0"
+        >
+          <div className="space-y-3 text-sm">
+            <div className="chat-client rounded-2xl bg-background p-3 text-text opacity-0">
+              Hey Thommy, our shop is struggling. We need a high-converting web app to scale up.
+            </div>
+            <div className="chat-response rounded-2xl bg-accent p-3 text-[#080808] opacity-0">
+              I got you. Watch this code injection.
+            </div>
+          </div>
+        </div>
+
+        <div
+          ref={ctaRef}
+          className="cta-final absolute inset-0 z-20 flex scale-90 items-center justify-center bg-background/90 opacity-0 backdrop-blur-sm"
+        >
+          <div className="rounded-3xl border border-border bg-surface p-12 text-center">
+            <h3 className="text-2xl font-semibold text-text md:text-3xl">
+              Ready to scale like this?
+            </h3>
+            <a
+              href="#contact"
+              className="mt-6 inline-block rounded-full bg-accent px-8 py-3.5 text-sm font-medium text-[#080808]"
+            >
+              Work With Me
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  );
+}
+
+
+
+====== FILE: components\StructuredData.tsx ======
+
+"use client";
+
+export function StructuredData() {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "Tommie.dev - Web Development",
+    "@id": "https://tommie003.vercel.app",
+    "url": "https://tommie003.vercel.app",
+    "telephone": "+233538315085",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Kukurantumi",
+      "addressRegion": "Eastern Region",
+      "addressCountry": "GH"
+    },
+    "priceRange": "$$",
+    "description": "Freelance full-stack developer and UI/UX designer building high-performance Next.js websites and applications."
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+}
+
+
+
+====== FILE: components\TerminalModal.tsx ======
+
+"use client";
+
+import { useState } from "react";
+import { motion } from "framer-motion";
+
+export function TerminalModal() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [input, setInput] = useState("");
+  const [logs, setLogs] = useState<string[]>([
+    "Tommie.dev Interactive CLI v1.0",
+    "Type 'help' to view available commands.",
+  ]);
+
+  const handleCommand = (e: React.FormEvent) => {
+    e.preventDefault();
+    const cmd = input.trim().toLowerCase();
+    let response = "";
+
+    if (cmd === "help") {
+      response = "Available commands: 'skills', 'about', 'clear', 'contact'";
+    } else if (cmd === "skills") {
+      response = "Next.js, TypeScript, Tailwind CSS, Framer Motion, AI-assisted development with Claude";
+    } else if (cmd === "about") {
+      response = "Tommie - Full-Stack Developer & UI/UX Specialist crafting high-end web builds.";
+    } else if (cmd === "contact") {
+      response = "WhatsApp / Email available directly via the estimator below.";
+    } else if (cmd === "clear") {
+      setLogs([]);
+      setInput("");
+      return;
+    } else {
+      response = `Command not recognized: '${cmd}'. Type 'help' for options.`;
+    }
+
+    setLogs((prev) => [...prev, `> ${input}`, response]);
+    setInput("");
+  };
+
+  return (
+    <div className="py-12 flex justify-center">
+      {!isOpen ? (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="px-5 py-2.5 bg-black/40 border border-white/10 hover:border-emerald-500/40 rounded-xl text-xs text-zinc-400 hover:text-emerald-400 transition-all backdrop-blur-md"
+        >
+          Open Developer Terminal
+        </button>
+      ) : (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="w-full max-w-2xl bg-zinc-950/90 border border-white/10 rounded-2xl p-6 font-mono text-sm text-emerald-400 shadow-2xl backdrop-blur-xl"
+        >
+          <div className="flex justify-between items-center mb-4 border-b border-zinc-800 pb-3">
+            <span className="text-xs text-zinc-500">tommie@portfolio:~</span>
+            <button onClick={() => setIsOpen(false)} className="text-zinc-500 hover:text-white text-xs">
+              [Close]
+            </button>
+          </div>
+          <div className="h-48 overflow-y-auto mb-4 space-y-1.5 text-xs">
+            {logs.map((log, index) => (
+              <div key={index} className={log.startsWith(">") ? "text-white" : "text-emerald-400"}>
+                {log}
+              </div>
+            ))}
+          </div>
+          <form onSubmit={handleCommand} className="flex items-center gap-2">
+            <span className="text-emerald-500">&gt;</span>
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="type a command..."
+              className="bg-transparent border-none outline-none text-white w-full text-xs font-mono"
+            />
+          </form>
+        </motion.div>
+      )}
+    </div>
+  );
+}
+
+
+
+====== FILE: components\Testimonial.tsx ======
+
+"use client";
+
+import { motion } from "framer-motion";
+import { Quote } from "lucide-react";
+
+export function Testimonial() {
+  return (
+    <section className="mx-auto max-w-4xl px-6 py-20">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="relative rounded-3xl border border-white/10 bg-black/40 p-10 backdrop-blur-md"
+      >
+        <Quote className="h-8 w-8 text-accent" />
+        <p className="mt-6 text-lg text-white/90 md:text-xl">
+          Replace this with an actual quote from your Noodles King client about speed, design quality, and results.
+        </p>
+        <div className="mt-6 flex items-center gap-3">
+          <div className="h-10 w-10 rounded-full bg-accent/20" />
+          <div>
+            <div className="text-sm font-medium text-white">Noodles King</div>
+            <div className="text-xs text-white/60">Restaurant and Online Ordering</div>
+          </div>
+        </div>
+      </motion.div>
+    </section>
+  );
+}
+
+
+
+====== FILE: components\ThemeProvider.tsx ======
+
+"use client";
+
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import type { ReactNode } from "react";
+
+export function ThemeProvider({
+  children,
+  forcedTheme,
+}: {
+  children: ReactNode;
+  forcedTheme?: string;
+}) {
+  return (
+    <NextThemesProvider
+      attribute="class"
+      defaultTheme="dark"
+      enableSystem={false}
+      forcedTheme={forcedTheme}
+    >
+      {children}
+    </NextThemesProvider>
+  );
+}
+
+
+
+====== FILE: components\ThemeToggle.tsx ======
+
+"use client";
+
+import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
+import { Moon, Sun } from "lucide-react";
+
+export function ThemeToggle() {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+  if (!mounted) {
+    return <div className="h-9 w-9" aria-hidden />;
+  }
+
+  const isDark = theme === "dark";
+
+  return (
+    <button
+      type="button"
+      onClick={() => setTheme(isDark ? "light" : "dark")}
+      className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-text transition-colors hover:border-accent hover:text-accent"
+      aria-label="Toggle theme"
+    >
+      {isDark ? <Sun size={16} /> : <Moon size={16} />}
+    </button>
+  );
+}
+
+
+
+====== FILE: components\TiltCard.tsx ======
+
+"use client";
+
+import { useRef } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+
+export function TiltCard({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [8, -8]), {
+    stiffness: 300,
+    damping: 30,
+  });
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-8, 8]), {
+    stiffness: 300,
+    damping: 30,
+  });
+
+  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    const rect = ref.current?.getBoundingClientRect();
+    if (!rect) return;
+    x.set((e.clientX - rect.left) / rect.width - 0.5);
+    y.set((e.clientY - rect.top) / rect.height - 0.5);
+  }
+
+  function handleMouseLeave() {
+    x.set(0);
+    y.set(0);
+  }
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ rotateX, rotateY, transformPerspective: 800 }}
+      className="group relative"
+    >
+      <div
+        className={`relative transition-[border-color,box-shadow] duration-300 group-hover:border-emerald-500/40 group-hover:shadow-[0_0_40px_-8px_rgba(16,185,129,0.45)] ${className}`}
+      >
+        {children}
+      </div>
+    </motion.div>
+  );
+}
+
+
+
+====== FILE: components\VideoBackground.tsx ======
+
+export function VideoBackground() {
+  return (
+    <div className="fixed inset-0 -z-10 overflow-hidden">
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="h-full w-full object-cover opacity-70 dark:opacity-80"
+      >
+        <source src="/bg-video.mp4" type="video/mp4" />
+      </video>
+      <div className="absolute inset-0 bg-white/10 dark:bg-black/25" />
+    </div>
+  );
+}
+
+
+
+====== FILE: components\Work.tsx ======
+
+"use client";
+
+import { motion } from "framer-motion";
+
+const project = {
+  id: "noodles-king",
+  title: "Noodles King",
+  subtitle: "Featured Client Project - Video Walkthrough",
+  description: "High-performance digital restaurant platform with custom UI micro-interactions, full menu visualization, and seamless mobile-responsive checkout.",
+  tags: ["Live Client", "Next.js 16", "Tailwind CSS", "Framer Motion"],
+  video: "/videos/noodles-king.mp4",
+  poster: "/projects/noodles-king.jpg",
+};
+
+export function Work() {
+  return (
+    <section id="work" className="py-24 px-6 max-w-7xl mx-auto">
+      <div className="text-center mb-14">
+        <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-3.5 py-1.5 rounded-full border border-emerald-500/20 inline-block mb-3">
+          Portfolio Showcase
+        </span>
+        <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-3">
+          Selected Work
+        </h2>
+        <p className="text-zinc-400 max-w-xl mx-auto text-sm md:text-base">
+          Large format video demonstration of custom web builds and client projects.
+        </p>
+      </div>
+
+      <div className="max-w-5xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="group relative rounded-3xl bg-zinc-950/80 border border-white/10 overflow-hidden hover:border-emerald-500/50 transition-all duration-500 shadow-[0_0_50px_rgba(0,0,0,0.8)]"
+        >
+          <div className="relative w-full aspect-video md:aspect-[21/9] overflow-hidden bg-zinc-900">
+            <video
+              src={project.video}
+              poster={project.poster}
+              autoPlay
+              loop
+              muted
+              playsInline
+              onTimeUpdate={(e) => {
+                if (e.currentTarget.currentTime >= 10) {
+                  e.currentTarget.currentTime = 0;
+                }
+              }}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out opacity-95 group-hover:opacity-100"
+            />
+
+            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent pointer-events-none" />
+
+            <div className="absolute top-6 left-6 flex items-center gap-2 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
+              <span className="text-xs font-mono font-medium text-emerald-300 tracking-wider uppercase">
+                {project.subtitle}
+              </span>
+            </div>
+          </div>
+
+          <div className="p-8 md:p-10 bg-gradient-to-b from-zinc-950/50 to-black">
+            <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+              <h3 className="text-3xl font-extrabold text-white group-hover:text-emerald-400 transition-colors">
+                {project.title}
+              </h3>
+
+              <div className="flex flex-wrap gap-2">
+                {project.tags.map((tag, idx) => (
+                  <span
+                    key={idx}
+                    className="px-3.5 py-1.5 rounded-full text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <p className="text-zinc-400 text-sm md:text-base max-w-3xl leading-relaxed">
+              {project.description}
+            </p>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+
+
+====== FILE: lib\constants.ts ======
+
+export const SITE = {
+  name: "Tommie",
+  fullName: "Tommie.dev",
+  role: "Full Stack Web Developer & UI/UX Designer",
+  tagline: "I build cinematic, high-performance websites that feel custom-crafted, not templated.",
+  email: "toamoako.dev@gmail.com",
+};
+
+export const NAV_LINKS = [
+  { label: "Work", href: "#work" },
+  { label: "About", href: "#about" },
+  { label: "Contact", href: "#contact" },
+];
+
+
+
+====== FILE: types\vanta.d.ts ======
+
+declare module "vanta/dist/vanta.fog.min" {
+  const fog: any;
+  export default fog;
+}
+declare module "vanta/dist/*" {
+  const vantaEffect: any;
+  export default vantaEffect;
+}
+
+
+
+====== FILE: next-env.d.ts ======
+
+/// <reference types="next" />
+/// <reference types="next/image-types/global" />
+import "./.next/dev/types/routes.d.ts";
+import "./.next/dev/types/root-params.d.ts";
+
+// NOTE: This file should not be edited
+// see https://nextjs.org/docs/app/api-reference/config/typescript for more information.
+
+
+
+====== FILE: next.config.ts ======
+
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "X-Frame-Options",
+            value: "DENY",
+          },
+          {
+            key: "X-Content-Type-Options",
+            value: "nosniff",
+          },
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
+          },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=()",
+          },
+        ],
+      },
+    ];
+  },
+};
+
+export default nextConfig;
+
+
+
