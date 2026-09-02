@@ -18,12 +18,30 @@
   --color-border: var(--border);
 }
 
+/* Hardware Acceleration Helper */
 .transform-gpuWillChange {
   will-change: transform;
   transform: translateZ(0);
 }
 
+/* Optimize video rendering layers */
 video {
   backface-visibility: hidden;
   perspective: 1000px;
+}
+
+/* Disable text selection globally */
+body {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Allow text selection inside the contact section */
+#contact, #contact *, .contact, .contact * {
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
 }
