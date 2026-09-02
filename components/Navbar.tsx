@@ -27,7 +27,7 @@ function useAccraTime() {
 
 export function Navbar() {
   const time = useAccraTime();
-  const { isMuted, toggleMute, playClick, playHover  } = useUIAudio();
+  const { isMuted, toggleMute, playClick, playHover } = useUIAudio();
 
   return (
     <header className="fixed left-0 top-0 z-40 w-full border-b border-white/10 bg-white/10 backdrop-blur-md dark:border-white/10 dark:bg-black/25">
@@ -62,23 +62,22 @@ export function Navbar() {
 
           <button
             onClick={toggleMute}
-            aria-label={enabled ? "Mute UI sounds" : "Enable UI sounds"}
+            aria-label={isMuted ? "Enable UI sounds" : "Mute UI sounds"}
             className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/70 transition-colors hover:text-accent"
           >
-            {enabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
+            {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
           </button>
 
           <a
             href="#contact"
             onMouseEnter={playHover}
             onClick={playClick}
-            className="rounded-full bg-accent px-5 py-2 text-sm font-medium text-[#080808] transition-transform hover:scale-105"
+            className="rounded-full bg-accent px-5 py-2 text-sm font-semibold text-black transition-transform hover:scale-105"
           >
-            Lets Talk
+            Let's Talk
           </a>
         </div>
       </nav>
     </header>
   );
 }
-

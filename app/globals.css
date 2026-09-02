@@ -1,12 +1,28 @@
 @import "tailwindcss";
 
-/* Hardware Acceleration Helper */
+:root {
+  --background: #080808;
+  --surface: #111111;
+  --text: #ffffff;
+  --muted: #a0a0a0;
+  --accent: #10b981;
+  --border: rgba(255, 255, 255, 0.1);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-border: var(--border);
+}
+
 .transform-gpuWillChange {
   will-change: transform;
   transform: translateZ(0);
 }
 
-/* Optimize video rendering layers */
 video {
   backface-visibility: hidden;
   perspective: 1000px;
