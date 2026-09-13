@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -57,26 +57,27 @@ export function Projects() {
         <span className="text-xs uppercase tracking-[0.2em] text-white/70">
           Also shipped
         </span>
-        <div className="mt-4 flex flex-wrap gap-3">
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
           <a
             href="https://sandramills01.bolt.host/"
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-full border border-white/10 px-5 py-2.5 text-sm text-white transition-colors hover:border-accent hover:text-accent"
+            className="rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md p-4 transition-colors hover:border-accent hover:text-accent"
           >
-            sandramills01 -&gt;
+            <div className="text-sm font-medium text-white">sandramills01 -&gt;</div>
+            <div className="mt-1 text-xs text-white/60">Site for a customer service and business trainer working with healthcare providers</div>
           </a>
           <a
             href="https://ralachips.lovable.app/"
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-full border border-white/10 px-5 py-2.5 text-sm text-white transition-colors hover:border-accent hover:text-accent"
+            className="rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md p-4 transition-colors hover:border-accent hover:text-accent"
           >
-            Rala Chips -&gt;
+            <div className="text-sm font-medium text-white">Rala Chips -&gt;</div>
+            <div className="mt-1 text-xs text-white/60">E-commerce site for a real plantain chips brand based in Koforidua, Ghana</div>
           </a>
         </div>
       </div>
     </section>
   );
 }
-

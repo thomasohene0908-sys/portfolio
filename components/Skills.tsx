@@ -1,4 +1,4 @@
-﻿export function Skills() {
+export function Skills() {
   return (
     <section id="skills" className="relative z-10 bg-transparent text-white py-32 px-6 max-w-5xl mx-auto">
       <span className="text-accent text-sm font-mono tracking-wider uppercase mb-3 block">02 / Toolkit</span>
@@ -20,7 +20,6 @@
           <ul className="space-y-2 text-sm text-zinc-300">
             <li>- Git and GitHub</li>
             <li>- Vercel deployment</li>
-            <li>- AI-assisted development with Claude</li>
             <li>- Iterative client feedback loops</li>
           </ul>
         </div>

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { motion } from "framer-motion";
 
@@ -7,7 +7,7 @@ const project = {
   title: "Noodles King",
   subtitle: "Featured Client Project - Video Walkthrough",
   description: "High-performance digital restaurant platform with custom UI micro-interactions, full menu visualization, and seamless mobile-responsive checkout.",
-  tags: ["Live Client", "Next.js 16", "Tailwind CSS", "Framer Motion"],
+  tags: ["Live Client", "Next.js", "Tailwind CSS", "Framer Motion"],
   video: "/videos/noodles-king.mp4",
   poster: "/projects/noodles-king.jpg",
 };
