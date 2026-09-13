@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 const project = {
@@ -13,6 +14,25 @@ const project = {
 };
 
 export function Work() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section id="work" className="py-24 px-6 max-w-7xl mx-auto">
       <div className="text-center mb-14">
@@ -29,6 +49,7 @@ export function Work() {
 
       <div className="max-w-5xl mx-auto">
         <motion.div
+          ref={containerRef}
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
@@ -36,9 +57,10 @@ export function Work() {
         >
           <div className="relative w-full aspect-video md:aspect-[21/9] overflow-hidden bg-zinc-900">
             <video
-              src={project.video}
+              src={isInView ? project.video : undefined}
               poster={project.poster}
-              autoPlay
+              preload="none"
+              autoPlay={isInView}
               loop
               muted
               playsInline

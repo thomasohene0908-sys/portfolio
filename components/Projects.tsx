@@ -25,7 +25,7 @@ export function Projects() {
           <Image
             src="/projects/noodles-king.jpg"
             alt="Noodles King"
-            loading="eager"
+            priority
             fill
             sizes="(min-width: 768px) 50vw, 100vw"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
