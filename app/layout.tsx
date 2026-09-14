@@ -13,13 +13,13 @@ import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
+export const metadata: Metadata = {  keywords: ["Thomas Ohene Amoako", "Tommie", "web developer Ghana", "freelance web developer", "Next.js developer", "UI/UX designer Ghana", "full-stack developer"],
   verification: {
     google: "L9T2j9b-q48OlWN1ju2mdXdDt-BKbd5inlIl_nmyGQE",
   },
 
-  title: "Tommie.dev - Full Stack Developer & UI/UX Designer",
-  description: "Cinematic, high-performance web development and design portfolio.",
+  title: "Thomas Ohene Amoako | Full-Stack Web Developer in Ghana - Tommie.dev",
+  description: "Thomas Ohene Amoako (Tommie) — freelance full-stack web developer in Ghana building fast, cinematic websites for clients worldwide. Next.js, React, UI/UX design.",
 };
 
 export default function RootLayout({
@@ -45,5 +45,6 @@ export default function RootLayout({
     </html>
   );
 }
+
 
 
