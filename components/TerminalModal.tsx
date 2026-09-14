@@ -19,7 +19,7 @@ export function TerminalModal() {
     if (cmd === "help") {
       response = "Available commands: 'skills', 'about', 'clear', 'contact'";
     } else if (cmd === "skills") {
-      response = "Next.js, TypeScript, Tailwind CSS, Framer Motion, AI-assisted development with Claude";
+      response = "Next.js, TypeScript, Tailwind CSS, Framer Motion";
     } else if (cmd === "about") {
       response = "Tommie - Full-Stack Developer & UI/UX Specialist crafting high-end web builds.";
     } else if (cmd === "contact") {
