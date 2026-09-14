@@ -15,7 +15,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   verification: {
-    google: "zMrI-rgSAQpPbopgZcLzauRbOouqamrb9PbNcsInOpA",
+    google: "L9T2j9b-q48OlWN1ju2mdXdDt-BKbd5inlIl_nmyGQE",
   },
 
   title: "Tommie.dev - Full Stack Developer & UI/UX Designer",
@@ -45,4 +45,5 @@ export default function RootLayout({
     </html>
   );
 }
+
 
