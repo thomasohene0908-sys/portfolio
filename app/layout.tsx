@@ -14,6 +14,10 @@ import { FloatingWhatsApp } from "@/components/FloatingWhatsApp";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  verification: {
+    google: "zMrI-rgSAQpPbopgZcLzauRbOouqamrb9PbNcsInOpA",
+  },
+
   title: "Tommie.dev - Full Stack Developer & UI/UX Designer",
   description: "Cinematic, high-performance web development and design portfolio.",
 };
@@ -41,3 +45,4 @@ export default function RootLayout({
     </html>
   );
 }
+
