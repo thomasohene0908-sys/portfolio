@@ -9,9 +9,11 @@ export function Skills() {
           <h3 className="text-lg font-semibold mb-4 text-white border-b border-white/10 pb-3">Frontend Craft</h3>
           <ul className="space-y-2 text-sm text-zinc-300">
             <li>- Next.js (App Router)</li>
+            <li>- React</li>
             <li>- TypeScript</li>
             <li>- Tailwind CSS</li>
             <li>- Framer Motion animation</li>
+            <li>- Supabase</li>
           </ul>
         </div>
 

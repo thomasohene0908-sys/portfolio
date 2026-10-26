@@ -47,6 +47,18 @@ export function Work() {
         </p>
       </div>
 
+      <div className="mx-auto mb-10 max-w-5xl rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-md">
+        <h3 className="text-lg font-semibold mb-4 text-white border-b border-white/10 pb-3">
+          What I build
+        </h3>
+        <ul className="grid gap-2 text-sm text-zinc-300 sm:grid-cols-2">
+          <li>- Business websites</li>
+          <li>- Online ordering and POS systems</li>
+          <li>- Online stores with WhatsApp checkout</li>
+          <li>- Website fixes and SEO clean-ups</li>
+        </ul>
+      </div>
+
       <div className="max-w-5xl mx-auto">
         <motion.div
           ref={containerRef}
