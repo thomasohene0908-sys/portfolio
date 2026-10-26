@@ -1,7 +1,7 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
-import { Mail, MessageCircle, ChevronDown, Globe, Share2 } from "lucide-react";
+import { Mail, MessageCircle, ChevronDown, Globe } from "lucide-react";
 
 type Region = "GH" | "USD";
 type ProjectType = "business" | "restaurant" | "ecommerce" | "webapp";
@@ -228,19 +228,6 @@ export function Contact() {
           <div>
             <div className="text-sm font-medium text-white">GitHub</div>
             <div className="text-xs text-zinc-400">thomasohene0908-sys</div>
-          </div>
-        </a>
-
-        <a
-          href="https://web.facebook.com/profile.php?id=61592102204325"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md p-5 transition-colors hover:border-emerald-500/40"
-        >
-          <Share2 className="h-5 w-5 text-emerald-400" />
-          <div>
-            <div className="text-sm font-medium text-white">Facebook</div>
-            <div className="text-xs text-zinc-400">Message me directly</div>
           </div>
         </a>
       </div>
