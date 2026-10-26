@@ -72,15 +72,8 @@ export function Work() {
               src={isInView ? project.video : undefined}
               poster={project.poster}
               preload="none"
-              autoPlay={isInView}
-              loop
-              muted
+              controls
               playsInline
-              onTimeUpdate={(e) => {
-                if (e.currentTarget.currentTime >= 10) {
-                  e.currentTarget.currentTime = 0;
-                }
-              }}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out opacity-95 group-hover:opacity-100"
             />
 

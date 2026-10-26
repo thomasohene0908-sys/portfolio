@@ -38,17 +38,6 @@ export function PrismaHero() {
   return (
     <section id="top" className="h-screen w-full">
       <div className="relative h-full w-full overflow-hidden">
-
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 h-full w-full object-cover"
-        >
-          <source src="/bg-video.mp4" type="video/mp4" />
-        </video>
-
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/70" />
 
         <nav className="absolute left-1/2 top-6 z-20 -translate-x-1/2">
