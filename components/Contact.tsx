@@ -230,6 +230,18 @@ export function Contact() {
             <div className="text-xs text-zinc-400">thomasohene0908-sys</div>
           </div>
         </a>
+        <a
+          href="https://www.linkedin.com/in/thomas-ohene-amoako"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md p-5 transition-colors hover:border-emerald-500/40"
+        >
+          <Globe className="h-5 w-5 text-emerald-400" />
+          <div>
+            <div className="text-sm font-medium text-white">LinkedIn</div>
+            <div className="text-xs text-zinc-400">Thomas Ohene Amoako</div>
+          </div>
+        </a>
       </div>
 
       <div className="mx-auto max-w-2xl">
@@ -250,4 +262,3 @@ export function Contact() {
     </section>
   );
 }
-
