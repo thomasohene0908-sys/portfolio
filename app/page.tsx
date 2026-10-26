@@ -1,8 +1,9 @@
-﻿import { Navbar } from "@/components/Navbar";
+import { Navbar } from "@/components/Navbar";
 import { PrismaHero } from "@/components/PrismaHero";
 import { About } from "@/components/About";
 import { Skills } from "@/components/Skills";
 import { Work } from "@/components/Work";
+import { SkyksShowcase } from "@/components/SkyksShowcase";
 import { Projects } from "@/components/Projects";
 import { CaseStudy } from "@/components/CaseStudy";
 import { FAQ } from "@/components/FAQ";
@@ -18,6 +19,7 @@ export default function Page() {
       <About />
       <Skills />
       <Work />
+      <SkyksShowcase />
       <Projects />
       <CaseStudy />
       <FAQ />
