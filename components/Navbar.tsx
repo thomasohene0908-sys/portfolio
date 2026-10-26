@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { NAV_LINKS } from "@/lib/constants";
 import { useEffect, useState } from "react";
@@ -57,7 +57,7 @@ export function Navbar() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
             </span>
-            Available for Q3 Projects GMT {time}
+            Available for New Projects GMT {time}
           </div>
 
           <button
