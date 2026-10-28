@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState } from "react";
 
@@ -29,7 +29,7 @@ export function Footer() {
   return (
     <footer className="border-t border-white/10">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-10 text-sm text-white/70 md:flex-row">
-        <span>Copyright Tommie.dev. All rights reserved.</span>
+        <span>Copyright Tommie. All rights reserved.</span>
         <span className="text-xs text-white/50">{fps} FPS</span>
         <span>Built with Next.js and Framer Motion.</span>
       </div>

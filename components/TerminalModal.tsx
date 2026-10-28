@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -7,7 +7,7 @@ export function TerminalModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [logs, setLogs] = useState<string[]>([
-    "Tommie.dev Interactive CLI v1.0",
+    "Tommie Interactive CLI v1.0",
     "Type 'help' to view available commands.",
   ]);
 

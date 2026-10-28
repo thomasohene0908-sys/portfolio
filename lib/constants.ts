@@ -1,6 +1,6 @@
-﻿export const SITE = {
+export const SITE = {
   name: "Tommie",
-  fullName: "Tommie.dev",
+  fullName: "Tommie",
   role: "Full Stack Web Developer & UI/UX Designer",
   tagline: "I build cinematic, high-performance websites that feel custom-crafted, not templated.",
   email: "toamoako.dev@gmail.com",
