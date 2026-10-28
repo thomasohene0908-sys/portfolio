@@ -7,19 +7,19 @@ import { useUIAudio } from "./AudioProvider";
 const faqs = [
   {
     q: "What is your typical turn-around time for a website?",
-    a: "Standard business sites take 1-2 weeks, while custom e-commerce or full-stack web applications take 2-4 weeks from initial kickoff to deployment.",
+    a: "A typical business website takes 10 to 14 days from the day we agree the scope, depending on how quickly I get your content (logo, photos, menu or product list).",
   },
   {
     q: "Do you handle hosting, domains, and deployment?",
-    a: "Yes. I manage complete setup on Vercel, AWS, or custom servers, connect your custom domains, and set up SSL security certificates.",
+    a: "Yes. I set up the hosting and register your domain in your name, so you own it. Domain and hosting costs are listed separately so there are no surprises.",
   },
   {
     q: "Can I update content on my site after launch?",
-    a: "Absolutely. Every project includes CMS integration (Sanity or custom admin) or an intuitive editing interface so you can update text and images effortlessly.",
+    a: "Yes. I can add a simple admin page so you can edit menus, prices and posts yourself, or I can make the updates for you.",
   },
   {
     q: "How do payments and project contracts work?",
-    a: "Projects operate on a standard 50% initial deposit and 50% upon final launch verification. Estimates generated on-site link directly to WhatsApp to kick off discussion.",
+    a: "We agree the scope and price in writing first. For most projects I show you a homepage preview before any payment, then payment is split into two parts: one when you approve the preview and the balance when the site goes live.",
   },
 ];
 
