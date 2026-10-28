@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { motion, useInView } from "framer-motion";
 import { ArrowRight } from "lucide-react";
@@ -58,7 +58,7 @@ export function PrismaHero() {
           <div className="grid grid-cols-12 items-end gap-4">
             <div className="col-span-12 lg:col-span-8">
               <h1 className="font-[family-name:var(--font-heading)] font-medium leading-[0.85] tracking-[-0.03em] text-white text-[13vw] sm:text-[11vw] md:text-[9vw] lg:text-[7.5vw]" style={{ textShadow: "0 4px 24px rgba(0,0,0,0.35)" }}>
-                <WordsPullUp text="Tommie.dev" />
+                <WordsPullUp text="Tommie" />
               </h1>
             </div>
 

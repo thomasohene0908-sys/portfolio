@@ -18,16 +18,16 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://tommie003.vercel.app"),
   alternates: { canonical: "https://tommie003.vercel.app" },
   openGraph: {
-    title: "Thomas Ohene Amoako | Full-Stack Web Developer in Ghana - Tommie.dev",
+    title: "Thomas Ohene Amoako | Full-Stack Web Developer in Ghana - Tommie",
     description: "Thomas Ohene Amoako (Tommie) is a freelance full-stack web developer in Ghana building fast, cinematic websites for clients worldwide.",
     url: "https://tommie003.vercel.app",
-    siteName: "Tommie.dev",
+    siteName: "Tommie",
     images: [{ url: "https://tommie003.vercel.app/projects/noodles-king.jpg", width: 1200, height: 630 }],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Thomas Ohene Amoako | Full-Stack Web Developer in Ghana - Tommie.dev",
+    title: "Thomas Ohene Amoako | Full-Stack Web Developer in Ghana - Tommie",
     description: "Thomas Ohene Amoako (Tommie) is a freelance full-stack web developer in Ghana building fast, cinematic websites for clients worldwide.",
     images: ["https://tommie003.vercel.app/projects/noodles-king.jpg"],
   },  keywords: ["Thomas Ohene Amoako", "Tommie", "web developer Ghana", "freelance web developer", "Next.js developer", "UI/UX designer Ghana", "full-stack developer"],
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     google: "L9T2j9b-q48OlWN1ju2mdXdDt-BKbd5inlIl_nmyGQE",
   },
 
-  title: "Thomas Ohene Amoako | Full-Stack Web Developer in Ghana - Tommie.dev",
+  title: "Thomas Ohene Amoako | Full-Stack Web Developer in Ghana - Tommie",
   description: "Thomas Ohene Amoako (Tommie) — freelance full-stack web developer in Ghana building fast, cinematic websites for clients worldwide. Next.js, React, UI/UX design.",
 };
 

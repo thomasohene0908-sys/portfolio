@@ -1,10 +1,10 @@
-﻿"use client";
+"use client";
 
 export function StructuredData() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
-    "name": "Tommie.dev - Web Development",
+    "name": "Tommie - Web Development",
     "@id": "https://tommie003.vercel.app",
     "url": "https://tommie003.vercel.app",
     "telephone": "+233538315085",
