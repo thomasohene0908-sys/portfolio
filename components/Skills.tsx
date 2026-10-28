@@ -6,7 +6,7 @@ export function Skills() {
 
       <div className="grid md:grid-cols-3 gap-6">
         <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-md">
-          <h3 className="text-lg font-semibold mb-4 text-white border-b border-white/10 pb-3">Frontend Craft</h3>
+          <h3 className="text-lg font-semibold mb-4 text-white border-b border-white/10 pb-3">Frontend &amp; Backend</h3>
           <ul className="space-y-2 text-sm text-zinc-300">
             <li>- Next.js (App Router)</li>
             <li>- React</li>
